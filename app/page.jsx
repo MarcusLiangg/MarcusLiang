@@ -27,7 +27,7 @@ export default function Portfolio() {
       {/* Fixed Navigation */}
       <header className="fixed top-0 left-0 right-0 bg-zinc-50/80 backdrop-blur-md z-50 border-b border-zinc-200">
         <nav className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="font-bold text-xl tracking-tighter">MarcusLiangg.GitHub.io</span>
+          <span className="font-bold text-xl tracking-tighter">E-Portfolio</span>
           <ul className="flex items-center gap-6 font-medium text-sm hidden md:flex">
             <li><Link href="#home" className="hover:text-blue-600 transition-colors">Home</Link></li>
             <li><Link href="#experience" className="hover:text-blue-600 transition-colors">Experience</Link></li>
