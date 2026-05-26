@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Enable smooth scrolling for the navigation links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Only hide the native cursor on devices with a mouse.
+  This ensures mobile and tablet users aren't affected.
+*/
+@media (pointer: fine) {
+  .hide-native-cursor,
+  .hide-native-cursor * {
+    cursor: none !important;
+  }
+}
