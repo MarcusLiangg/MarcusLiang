@@ -12,7 +12,7 @@ const WelcomeBanner = () => (
 
     {/* Left Column: Avatar & Welcome */}
     <div className="flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-dashed border-blue-500/50 pb-6 md:pb-0 md:pr-6">
-      <div className="mb-6 font-bold text-zinc-100 text-base">Welcome to my GitHub.io!</div>
+      <div className="mb-6 font-bold text-zinc-100 text-base">Welcome to my Personal Site!</div>
       <pre className="text-blue-500 font-bold mb-6 text-center leading-none text-lg">
 {`███▄ ▄███ ██
 █████████ ██
