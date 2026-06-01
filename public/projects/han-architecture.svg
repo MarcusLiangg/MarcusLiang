@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 960" role="img" aria-labelledby="title desc">
+  <title id="title">Light-background HAN architecture diagram</title>
+  <desc id="desc">Simplified hierarchical attention network architecture for judicial liability classification, showing word encoders, sentence encoders, feature vectors, and late fusion.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#38506a"/>
+    </marker>
+    <style>
+      .bg{fill:#fbfbf7}
+      .panel{fill:#fff;stroke:#d7e2ee;stroke-width:1.5}
+      .bandBlue{fill:#f2f8ff;stroke:#c9dcf2;stroke-width:1.4}
+      .bandGreen{fill:#f2fbf5;stroke:#c6e6cf;stroke-width:1.4}
+      .node{fill:#fff;stroke:#9fb3c8;stroke-width:1.5}
+      .cream{fill:#fff8d6;stroke:#d8c96f;stroke-width:1.5}
+      .blue{fill:#a9cff5;stroke:#4d91d3;stroke-width:1.5}
+      .green{fill:#b8f3bd;stroke:#48a65a;stroke-width:1.5}
+      .purple{fill:#eee6ff;stroke:#9b79dc;stroke-width:1.5}
+      .violet{fill:#7048ff;stroke:#4c2ed5;stroke-width:1.5}
+      .output{fill:#73bf32;stroke:#4d8f1d;stroke-width:1.5}
+      .line{stroke:#38506a;stroke-width:2;fill:none;marker-end:url(#arrow)}
+      .soft{stroke:#7f90a3;stroke-width:1.7;fill:none;stroke-dasharray:7 6;marker-end:url(#arrow)}
+      .title{fill:#1f3145;font-family:Arial,sans-serif;font-size:26px;font-weight:700}
+      .label{fill:#1f3145;font-family:Arial,sans-serif;font-size:16px;font-weight:700}
+      .small{fill:#42566c;font-family:Arial,sans-serif;font-size:13px;font-weight:600}
+      .tiny{fill:#54687e;font-family:Arial,sans-serif;font-size:12px;font-weight:600}
+      .tag{fill:#315b8d;font-family:Arial,sans-serif;font-size:12px;font-weight:700}
+      .white{fill:#fff;font-family:Arial,sans-serif;font-size:14px;font-weight:700}
+    </style>
+  </defs>
+
+  <rect class="bg" width="1280" height="960"/>
+  <rect class="panel" x="34" y="32" width="1212" height="888" rx="18"/>
+  <text class="title" x="64" y="78">Hierarchical Attention Network: Judicial Liability Classification</text>
+  <text class="small" x="64" y="106">Portfolio-readable recreation of the original HAN figure, preserving the model logic while removing slide-level clutter.</text>
+
+  <rect class="output" x="560" y="136" width="160" height="54" rx="6"/>
+  <text class="white" x="601" y="160">Defendant</text>
+  <text class="white" x="596" y="178">liable (1/0)</text>
+  <rect class="purple" x="536" y="222" width="208" height="62" rx="6"/>
+  <text class="label" x="584" y="247">MLP Classifier</text>
+  <text class="tiny" x="569" y="266">dropout, label smoothing, linear</text>
+  <rect class="node" x="570" y="318" width="140" height="50" rx="6"/>
+  <text class="label" x="606" y="349">Late Fusion</text>
+  <path class="line" d="M640 318 V284"/>
+  <path class="line" d="M640 222 V190"/>
+
+  <rect class="cream" x="88" y="420" width="226" height="60" rx="5"/>
+  <text class="tiny" x="132" y="444">Facts Document</text>
+  <text class="tiny" x="167" y="462">Vector</text>
+  <rect class="cream" x="358" y="420" width="156" height="60" rx="5"/>
+  <text class="tiny" x="400" y="444">Issue</text>
+  <text class="tiny" x="399" y="462">Vector</text>
+  <rect class="cream" x="558" y="420" width="156" height="60" rx="5"/>
+  <text class="tiny" x="603" y="444">Rule</text>
+  <text class="tiny" x="599" y="462">Vector</text>
+  <rect class="cream" x="758" y="420" width="138" height="60" rx="5"/>
+  <text class="tiny" x="798" y="444">Court</text>
+  <text class="tiny" x="792" y="462">Vector</text>
+  <rect class="cream" x="940" y="420" width="138" height="60" rx="5"/>
+  <text class="tiny" x="982" y="444">Judge</text>
+  <text class="tiny" x="974" y="462">Vector</text>
+
+  <path class="line" d="M201 420 C201 386 625 388 640 368"/>
+  <path class="line" d="M436 420 C436 392 626 390 640 368"/>
+  <path class="line" d="M636 420 V368"/>
+  <path class="line" d="M827 420 C827 392 654 390 640 368"/>
+  <path class="line" d="M1009 420 C1009 386 660 388 640 368"/>
+
+  <rect class="bandBlue" x="72" y="520" width="810" height="160" rx="12"/>
+  <text class="tag" x="96" y="550">Sentence-level encoder</text>
+  <rect class="blue" x="128" y="582" width="126" height="44" rx="5"/>
+  <text class="tiny" x="158" y="608">Sentence 1</text>
+  <rect class="blue" x="342" y="582" width="126" height="44" rx="5"/>
+  <text class="tiny" x="372" y="608">Sentence 2</text>
+  <rect class="blue" x="556" y="582" width="126" height="44" rx="5"/>
+  <text class="tiny" x="586" y="608">Sentence n</text>
+  <rect class="node" x="128" y="638" width="126" height="28" rx="4"/>
+  <text class="tiny" x="154" y="657">hidden state</text>
+  <rect class="node" x="342" y="638" width="126" height="28" rx="4"/>
+  <text class="tiny" x="368" y="657">hidden state</text>
+  <rect class="node" x="556" y="638" width="126" height="28" rx="4"/>
+  <text class="tiny" x="582" y="657">hidden state</text>
+  <path class="soft" d="M254 604 H342"/>
+  <path class="soft" d="M468 604 H556"/>
+  <path class="line" d="M201 582 V480"/>
+  <path class="line" d="M405 582 C405 530 436 530 436 480"/>
+  <path class="line" d="M619 582 C619 530 636 530 636 480"/>
+
+  <rect class="panel" x="918" y="540" width="246" height="116" rx="10"/>
+  <text class="tag" x="944" y="570">Sentence encoder</text>
+  <text class="small" x="944" y="592">Builds one representation</text>
+  <text class="small" x="944" y="612">per legal text stream using</text>
+  <text class="small" x="944" y="632">sequence-aware hidden states.</text>
+
+  <rect class="bandGreen" x="72" y="714" width="810" height="126" rx="12"/>
+  <text class="tag" x="96" y="744">Word-level encoder</text>
+  <rect class="violet" x="112" y="772" width="112" height="44" rx="5"/>
+  <text class="white" x="140" y="790">Fact Type</text>
+  <text class="white" x="142" y="807">Fact Date</text>
+  <rect class="green" x="284" y="772" width="118" height="44" rx="5"/>
+  <text class="tiny" x="320" y="800">word 1</text>
+  <rect class="green" x="480" y="772" width="118" height="44" rx="5"/>
+  <text class="tiny" x="516" y="800">word 2</text>
+  <rect class="green" x="676" y="772" width="118" height="44" rx="5"/>
+  <text class="tiny" x="712" y="800">word n</text>
+  <path class="soft" d="M224 794 H284"/>
+  <path class="soft" d="M402 794 H480"/>
+  <path class="soft" d="M598 794 H676"/>
+  <path class="line" d="M343 772 C343 718 191 718 191 626"/>
+  <path class="line" d="M539 772 C539 718 405 718 405 626"/>
+  <path class="line" d="M735 772 C735 718 619 718 619 626"/>
+
+  <rect class="panel" x="918" y="724" width="246" height="108" rx="10"/>
+  <text class="tag" x="944" y="754">Word encoder</text>
+  <text class="small" x="944" y="776">Aggregates token evidence</text>
+  <text class="small" x="944" y="796">before sentence-level</text>
+  <text class="small" x="944" y="816">reasoning is applied.</text>
+
+  <rect class="panel" x="96" y="870" width="1068" height="32" rx="8"/>
+  <text class="small" x="124" y="891">Leakage control: inference uses pre-decision sections and excludes labels or outcome-revealing text.</text>
+</svg>

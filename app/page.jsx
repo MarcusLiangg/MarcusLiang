@@ -4,7 +4,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Link from 'next/link';
-import { TerminalSquare, GraduationCap, FolderGit2, Code2, Mail, FileDown, Briefcase } from 'lucide-react';
+import { TerminalSquare, GraduationCap, FolderGit2, Code2, Mail, FileDown, Briefcase, ArrowUpRight } from 'lucide-react';
 import Terminal from '../components/Terminal';
 import { PROJECTS_DATA } from '../data/projects';
 import Image from 'next/image';
@@ -14,6 +14,9 @@ const ALL_CATEGORIES = ["All", ...new Set(PROJECTS_DATA.flatMap(p => p.categorie
 
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState("All");
+  
+  // NEW: State to track which project is selected in the split-view
+  const [selectedProjectId, setSelectedProjectId] = useState(PROJECTS_DATA[0]?.id);
 
   // Filter projects based on active category
   const filteredProjects = PROJECTS_DATA.filter(project => {
@@ -21,10 +24,12 @@ export default function Portfolio() {
     return project.categories.includes(activeCategory);
   });
 
+  const activeProject = filteredProjects.find(p => p.id === selectedProjectId) || filteredProjects[0];
+
   return (
     <div className="bg-zinc-50 text-zinc-900 min-h-screen font-sans selection:bg-zinc-900 selection:text-white">
       
-      {/* Fixed Navigation */}
+      {/* Navigation */}
       <header className="fixed top-0 left-0 right-0 bg-zinc-50/80 backdrop-blur-md z-50 border-b border-zinc-200">
         <nav className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <span className="font-bold text-xl tracking-tighter">E-Portfolio</span>
@@ -52,25 +57,52 @@ export default function Portfolio() {
 
       <main>
         {/* Section: Home (CLI) */}
-        <section id="home" className="min-h-screen pt-24 pb-12 px-6 flex flex-col items-center justify-center bg-zinc-50">
+        <section id="home" className="relative min-h-screen pt-24 pb-12 px-6 flex flex-col items-center justify-center overflow-hidden">
+          
+          {/* --- THE WALLPAPER LAYER --- */}
+          <div 
+            className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: "url('/desktop-bg.jpg')" }}
+          />
+          
+          {/* Optional: A very light dark overlay to make sure the terminal pops */}
+          <div className="absolute inset-0 z-0 bg-black/10" />
+
+          {/* --- Content Layer --- */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-3xl flex flex-col gap-8 items-center"
+            className="relative z-10 w-full max-w-3xl flex flex-col gap-8 items-center"
           >
-            <div className="text-center space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-2">
+            {/* Header Text (Now inside a sleek glassmorphism card so it stays readable!) */}
+            <div className="text-center space-y-4 bg-white/70 backdrop-blur-md p-8 rounded-3xl shadow-lg border border-white/50">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100/80 text-blue-800 text-xs font-semibold mb-2 shadow-sm backdrop-blur-md border border-white/50">
                 <TerminalSquare size={14} /> Chatbot Terminal OS
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-zinc-900">
                 Hello, I'm <span className="text-blue-600">Marcus Liang</span>.
               </h1>
-              <p className="text-lg text-zinc-500 max-w-xl mx-auto">
-                Interact with the chatbot terminal below to learn more about my stack, or scroll down to view my full background.
+              <p className="text-lg text-zinc-700 max-w-xl mx-auto font-medium">
+                Interact with the chatbot terminal below to learn more about my stack, or drag it around the screen!
               </p>
             </div>
-            <Terminal />
-            <div className="flex items-center justify-center gap-2 text-xs text-zinc-400 mt-4 font-medium">
+
+            {/* --- The Draggable Terminal --- */}
+            <motion.div
+              drag
+              dragMomentum={false}
+              dragConstraints={{ left: -600, right: 600, top: -400, bottom: 400 }}
+              className="w-full cursor-move"
+              whileHover={{ scale: 1.01 }} 
+              whileDrag={{ scale: 1.02, cursor: "grabbing" }} 
+            >
+              <div className="cursor-auto pointer-events-auto">
+                <Terminal />
+              </div>
+            </motion.div>
+
+            {/* Status Indicator (Also updated with glassmorphism to match) */}
+            <div className="flex items-center justify-center gap-2 text-xs text-zinc-700 mt-4 font-medium px-4 py-2 rounded-full border border-white/40 bg-white/60 backdrop-blur-md shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
               Agentic backend powered by OpenAI
             </div>
@@ -85,9 +117,20 @@ export default function Portfolio() {
               <h2 className="text-4xl font-bold tracking-tight">Experience</h2>
             </div>
             
-            <div className="space-y-8">
+            <div className="space-y-8 relative">
+              {/* Optional: The vertical timeline line itself */}
+              <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-0.5 bg-zinc-100 z-0"></div>
+
               {/* Job 1: X-Star Technology */}
-              <div className="bg-zinc-50 p-8 rounded-2xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
+              {/* Apply Animations Here */}
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                whileHover={{ scale: 1.02 }}
+                className="relative z-10 bg-zinc-50 p-8 rounded-2xl border border-zinc-200 shadow-sm transition-shadow duration-300 group hover:shadow-md hover:border-zinc-300 hover:bg-white"
+              >
                  <div className="flex flex-col md:flex-row md:items-start justify-between mb-6 gap-4">
                     {/*X-STAR: Logo and Title Container*/}
                     <div className="flex items-center gap-4 md:gap-5">
@@ -134,10 +177,18 @@ export default function Portfolio() {
                    <p className="text-zinc-600"><strong className="text-zinc-900">Languages:</strong> Python, SQL, JavaScript</p>
                    <p className="text-zinc-600 mt-1"><strong className="text-zinc-900">Tools:</strong> MySQL Server, VS Code, Excel, Lark</p>
                  </div>
-              </div>
+              </motion.div>
 
               {/* Job 2: Shopee */}
-              <div className="bg-zinc-50 p-8 rounded-2xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
+              {/* Apply Animations Here */}
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+                whileHover={{ scale: 1.02 }}
+                className="relative z-10 bg-zinc-50 p-8 rounded-2xl border border-zinc-200 shadow-sm transition-shadow duration-300 group hover:shadow-md hover:border-zinc-300 hover:bg-white"
+              >
                  <div className="flex flex-col md:flex-row md:items-start justify-between mb-6 gap-4">
                     {/* SHOPEE: Logo and Title Container */}
                     <div className="flex items-center gap-4 md:gap-5">
@@ -180,50 +231,83 @@ export default function Portfolio() {
                    <p className="text-zinc-600"><strong className="text-zinc-900">Languages:</strong> Python, SQL, JavaScript</p>
                    <p className="text-zinc-600 mt-1"><strong className="text-zinc-900">Tools:</strong> In-house query system, Google Sheets</p>
                  </div>
-              </div>
+              </motion.div>
 
             </div>
           </div>
         </section>
 
         {/* Section: Education */}
-        <section id="education" className="min-h-screen py-24 px-6 bg-zinc-50 flex flex-col items-center justify-center">
+        <section id="education" className="min-h-screen py-24 px-6 bg-zinc-50 flex flex-col items-center justify-center overflow-hidden">
           <div className="max-w-4xl w-full">
-            <div className="flex items-center gap-3 mb-12">
+            
+            {/* Section Header */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="flex items-center gap-3 mb-12"
+            >
               <GraduationCap className="text-blue-600" size={32} />
               <h2 className="text-4xl font-bold tracking-tight">Education</h2>
-            </div>
+            </motion.div>
             
-            <div className="border-l-2 border-zinc-200 pl-8 space-y-12">
+            <div className="border-l-2 border-zinc-200 pl-8 space-y-12 relative">
+              
               {/* Timeline Item 1: NUS */}
-              <div className="relative">
-                <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-[41px] top-1 border-4 border-white" />
-                <span className="text-sm font-semibold text-blue-600 tracking-wider uppercase">Aug 2023 - Dec 2026</span>
-                <h3 className="text-2xl font-bold mt-1">National University of Singapore</h3>
-                <p className="text-lg text-zinc-600 font-medium">B.Sc. Business Analytics (Honours)</p>
-                <p className="text-zinc-500 mt-2">
-                  <b>Specialization:</b> Machine Learning.<br />
-                  <b>Relevant Coursework:</b> BT4221 Advanced Analytics with Big Data Technologies, Machine Learning for Predictive Data Analytics.
-                </p>
-              </div>
+              <motion.div 
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="relative group cursor-default"
+              >
+                {/* Timeline Dot (Now animates color on hover!) */}
+                <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-[41px] top-1 border-4 border-white group-hover:scale-125 transition-transform duration-300" />
+                
+                {/* Content */}
+                <div className="bg-white p-6 rounded-2xl border border-transparent shadow-sm group-hover:shadow-md group-hover:border-blue-100 transition-all duration-300">
+                  <span className="text-sm font-semibold text-blue-600 tracking-wider uppercase">Aug 2023 - Dec 2026</span>
+                  <h3 className="text-2xl font-bold mt-1 text-zinc-900">National University of Singapore</h3>
+                  <p className="text-lg text-zinc-600 font-medium">B.Sc. Business Analytics (Honours)</p>
+                  <p className="text-zinc-500 mt-3 leading-relaxed">
+                    <strong className="text-zinc-700">Specialization:</strong> Machine Learning.<br />
+                    <strong className="text-zinc-700">Relevant Coursework:</strong> BT4221 Advanced Analytics with Big Data Technologies, Machine Learning for Predictive Data Analytics.
+                  </p>
+                </div>
+              </motion.div>
 
               {/* Timeline Item 2: Ngee Ann Poly */}
-              <div className="relative">
-                <div className="absolute w-4 h-4 bg-zinc-400 rounded-full -left-[41px] top-1 border-4 border-white" />
-                <span className="text-sm font-semibold text-zinc-500 tracking-wider uppercase">Apr 2018 - May 2021</span>
-                <h3 className="text-2xl font-bold mt-1">Ngee Ann Polytechnic</h3>
-                <p className="text-lg text-zinc-600 font-medium">Diploma with Merit in Financial Informatics</p>
-                <p className="text-zinc-500 mt-2">
-                <b>Specialization:</b> Financial Analytics. <br/> 
-                <b>Relevant Coursework:</b> Deep Learning, Predictive Analytics, Applied Analytics.</p>
-              </div>
+              <motion.div 
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }} // 0.2s delay creates the cascade effect
+                className="relative group cursor-default"
+              >
+                {/* Timeline Dot */}
+                <div className="absolute w-4 h-4 bg-zinc-400 group-hover:bg-blue-400 rounded-full -left-[41px] top-1 border-4 border-white group-hover:scale-125 transition-all duration-300" />
+                
+                {/* Content */}
+                <div className="bg-white p-6 rounded-2xl border border-transparent shadow-sm group-hover:shadow-md group-hover:border-blue-100 transition-all duration-300">
+                  <span className="text-sm font-semibold text-zinc-500 tracking-wider uppercase">Apr 2018 - May 2021</span>
+                  <h3 className="text-2xl font-bold mt-1 text-zinc-900">Ngee Ann Polytechnic</h3>
+                  <p className="text-lg text-zinc-600 font-medium">Diploma with Merit in Financial Informatics</p>
+                  <p className="text-zinc-500 mt-3 leading-relaxed">
+                    <strong className="text-zinc-700">Specialization:</strong> Financial Analytics. <br/> 
+                    <strong className="text-zinc-700">Relevant Coursework:</strong> Deep Learning, Predictive Analytics, Applied Analytics.
+                  </p>
+                </div>
+              </motion.div>
+
             </div>
           </div>
         </section>
 
-        {/* Section: Projects */}
+{/* Section: Projects (NEW MASTER-DETAIL SPLIT VIEW) */}
         <section id="projects" className="min-h-screen py-24 px-6 bg-white flex flex-col items-center justify-center">
-          <div className="max-w-5xl w-full">
+          <div className="max-w-6xl w-full">
+            
             <div className="flex items-center gap-3 mb-8">
               <FolderGit2 className="text-blue-600" size={32} />
               <h2 className="text-4xl font-bold tracking-tight">Projects</h2>
@@ -246,108 +330,197 @@ export default function Portfolio() {
               ))}
             </div>
 
-            {/* Projects Grid */}
-            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <AnimatePresence>
-                {filteredProjects.map((project) => (
-                  <motion.div
-                    key={project.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.2 }}
-                    className="bg-zinc-50 rounded-2xl p-6 shadow-sm border border-zinc-200 hover:shadow-md hover:border-blue-200 transition-all flex flex-col group relative"
-                  >
-                    {/* The Clickable Overlay */}
-                    <Link href={`/projects/${project.id}`} className="absolute inset-0 z-10" aria-label={`View details for ${project.title}`} />
-                    
-                    {/* 📸 THE IMAGE GOES HERE! */}
-                    {project.image && (
-                      <div className="aspect-video bg-zinc-200 rounded-lg mb-6 overflow-hidden relative z-0">
-                        <Image 
-                          src={project.image} 
-                          alt={project.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                    )}
-                    
-                    {/* The Text Content */}
-                    <div className="flex justify-between items-start mb-2 gap-2 relative z-0">
-                        <h3 className="text-xl font-bold text-zinc-900 leading-tight group-hover:text-blue-600 transition-colors">{project.title}</h3>
-                    </div>
-                    <div className="text-xs font-semibold text-blue-600 tracking-wider mb-4 uppercase relative z-0">{project.date}</div>
-                    
-                    <p className="text-zinc-500 text-sm mb-6 flex-grow relative z-0">{project.shortDesc}</p>
-                    
-                    <p className="text-zinc-500 text-sm mb-6 flex-grow relative z-0">{project.shortDesc}</p>
-                    
-                    {/* Tags Container */}
-                    <div className="flex flex-col gap-3 mt-auto relative z-0">
-                      
-                      {/* Grey Category Tags */}
-                      <div className="flex flex-wrap gap-2">
-                        {project.categories?.map(cat => (
-                          <span key={cat} className="px-2 py-1 bg-white border border-zinc-200 text-zinc-600 rounded text-xs font-medium">
-                            {cat}
-                          </span>
-                        ))}
+            {/* Split Layout Container */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-h-[600px]">
+              
+              {/* LEFT PANEL: Project List (Master) */}
+              <div className="lg:col-span-4 flex flex-col gap-3">
+                <AnimatePresence mode="popLayout">
+                  {filteredProjects.map((project) => {
+                    const isSelected = selectedProjectId === project.id;
+                    return (
+                      <motion.button
+                        key={project.id}
+                        layout
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        onClick={() => setSelectedProjectId(project.id)}
+                        className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 group ${
+                          isSelected 
+                            ? "bg-blue-50 border-blue-200 shadow-md ring-1 ring-blue-500/20" 
+                            : "bg-zinc-50 border-zinc-200 hover:bg-white hover:border-zinc-300 hover:shadow-sm"
+                        }`}
+                      >
+                        <h3 className={`text-lg font-bold mb-1 transition-colors ${isSelected ? "text-blue-700" : "text-zinc-900 group-hover:text-blue-600"}`}>
+                          {project.title}
+                        </h3>
+                        <div className={`text-xs font-semibold uppercase tracking-wider ${isSelected ? "text-blue-500" : "text-zinc-500"}`}>
+                          {project.date}
+                        </div>
+                      </motion.button>
+                    )
+                  })}
+                </AnimatePresence>
+              </div>
+
+              {/* RIGHT PANEL: Project Details (Detail) */}
+              <div className="lg:col-span-8">
+                {activeProject ? (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeProject.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      className="bg-white border border-zinc-200 rounded-3xl p-6 md:p-8 shadow-xl h-full flex flex-col relative overflow-hidden"
+                    >
+                      {/* Optional subtle background glow for the active project */}
+                      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
+
+                      {/* Featured Image */}
+                      {activeProject.image && (
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-8 border border-zinc-100 shadow-inner bg-zinc-100">
+                          <Image 
+                            src={activeProject.image} 
+                            alt={activeProject.title}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+
+                      {/* Project Header & Link */}
+                      <div className="flex justify-between items-start mb-4 gap-4 relative z-10">
+                        <div>
+                          <h2 className="text-3xl font-bold text-zinc-900 tracking-tight">{activeProject.title}</h2>
+                          <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mt-2">{activeProject.date}</p>
+                        </div>
+                        <Link 
+                          href={`/projects/${activeProject.id}`} 
+                          className="flex items-center gap-1 px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-full hover:bg-blue-600 transition-colors shrink-0"
+                        >
+                          View Case Study <ArrowUpRight size={16} />
+                        </Link>
                       </div>
 
-                      {/* Blue Technology Tags */}
-                      {project.technologies && project.technologies.length > 0 && (
-                        <div className="flex flex-wrap gap-2 pt-3 border-t border-zinc-100">
-                          {project.technologies.map(tech => (
-                            <span key={tech} className="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-semibold">
+                      {/* Description */}
+                      <p className="text-zinc-600 text-lg leading-relaxed mb-8 relative z-10 flex-grow">
+                        {activeProject.shortDesc}
+                      </p>
+
+                      {/* Tags */}
+                      <div className="mt-auto relative z-10">
+                        <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">Technologies & Stack</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {activeProject.technologies?.map(tech => (
+                            <span key={tech} className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">
                               {tech}
                             </span>
                           ))}
                         </div>
-                      )}
-                      
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+                      </div>
+
+                    </motion.div>
+                  </AnimatePresence>
+                ) : (
+                  // Fallback empty state if no projects match a filter
+                  <div className="h-full flex items-center justify-center text-zinc-400 font-medium bg-zinc-50 rounded-3xl border border-zinc-200 border-dashed">
+                    No projects found for this category.
+                  </div>
+                )}
+              </div>
+
+            </div>
           </div>
         </section>
 
-        {/* Section: Technical Skills */}
-        <section id="skills" className="min-h-screen py-24 px-6 bg-zinc-50 flex flex-col items-center justify-center">
-          <div className="max-w-5xl w-full">
-            <div className="flex items-center gap-3 mb-12">
+        {/* Section: Skills */}
+        <section id="skills" className="min-h-screen py-24 px-6 bg-zinc-50 flex flex-col items-center justify-center overflow-hidden">
+          <div className="max-w-6xl w-full">
+            
+            {/* Animated Header */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="flex items-center gap-3 mb-12"
+            >
               <Code2 className="text-blue-600" size={32} />
-              <h2 className="text-4xl font-bold tracking-tight">Technical Skills</h2>
-            </div>
+              <h2 className="text-4xl font-bold tracking-tight">Skills Summary</h2>
+            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Category 1 */}
-              <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:border-blue-200 hover:shadow-sm transition-all group">
-                <h3 className="font-bold text-xl mb-4 text-zinc-900 group-hover:text-blue-600 transition-colors">Machine Learning</h3>
-                <p className="text-zinc-600 leading-relaxed font-medium">Scikit-learn, XGBoost, PyTorch, Random Forest, Model Validation (PSI)</p>
-              </div>
+            {/* Staggered Grid Container */}
+            <motion.div 
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={{
+                hidden: { opacity: 0 },
+                show: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1 // Delays each card by 0.1s for a waterfall effect
+                  }
+                }
+              }}
+              // Upgraded to 3 columns on large screens to fit the 8 items better!
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" 
+            >
+              {[
+                {
+                  title: "Generative AI & Deep Learning",
+                  skills: "LangChain, LangGraph, FAISS (Vector Stores), PyTorch"
+                },
+                {
+                  title: "Machine Learning",
+                  skills: "Supervised & Unsupervised Learning (Random Forest, XGBoost, Clustering), Scikit-learn, Model Validation (PSI)"
+                },
+                {
+                  title: "Deployment & Model Serving",
+                  skills: "FastAPI, Flask, MLFlow, DataOps, DevOps, GitHub (Version Control)"
+                },
+                {
+                  title: "Programming Languages & Runtimes",
+                  skills: "Python, SQL (MySQL), Java, C#, R, JavaScript, Node.js"
+                },
+                {
+                  title: "Data Engineering & Cloud",
+                  skills: "Databricks, Apache Spark, AWS, Snowflake, ETL Pipelines"
+                },
+                {
+                  title: "Data Analytics & BI",
+                  skills: "Pandas, NumPy, Power BI (DAX), Tableau, Matplotlib, Vintage Analysis"
+                },
+                {
+                  title: "Automation & Tools",
+                  skills: "UiPath, Advanced Excel"
+                },
+                {
+                  title: "Core Competencies",
+                  skills: "Analytical Problem-Solving, Continuous Learning, Adaptability, Communication, Teamwork, Time Management"
+                }
+              ].map((category, index) => (
+                <motion.div 
+                  key={index}
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+                  }}
+                  whileHover={{ scale: 1.02 }} // Subtle lift on hover
+                  className="p-8 rounded-2xl border border-zinc-200 bg-white hover:border-blue-200 hover:shadow-md transition-all group flex flex-col"
+                >
+                  <h3 className="font-bold text-xl mb-4 text-zinc-900 group-hover:text-blue-600 transition-colors">
+                    {category.title}
+                  </h3>
+                  <p className="text-zinc-600 leading-relaxed font-medium mt-auto">
+                    {category.skills}
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
 
-              {/* Category 2 */}
-              <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:border-blue-200 hover:shadow-sm transition-all group">
-                <h3 className="font-bold text-xl mb-4 text-zinc-900 group-hover:text-blue-600 transition-colors">Data Engineering</h3>
-                <p className="text-zinc-600 leading-relaxed font-medium">Databricks, Apache Spark, Snowflake, AWS, ETL Pipelines</p>
-              </div>
-
-              {/* Category 3 */}
-              <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:border-blue-200 hover:shadow-sm transition-all group">
-                <h3 className="font-bold text-xl mb-4 text-zinc-900 group-hover:text-blue-600 transition-colors">Languages</h3>
-                <p className="text-zinc-600 leading-relaxed font-medium">Python, SQL, Java, C#, R, JavaScript</p>
-              </div>
-
-              {/* Category 4 */}
-              <div className="p-8 rounded-2xl border border-zinc-200 bg-white hover:border-blue-200 hover:shadow-sm transition-all group">
-                <h3 className="font-bold text-xl mb-4 text-zinc-900 group-hover:text-blue-600 transition-colors">Visualization & Tools</h3>
-                <p className="text-zinc-600 leading-relaxed font-medium">Power BI (DAX), Tableau, Matplotlib, UiPath</p>
-              </div>
-            </div>
           </div>
         </section>
 
