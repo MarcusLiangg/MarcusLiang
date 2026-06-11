@@ -39,16 +39,16 @@ export default function AgenticHealthcareProject() {
 
       <main className="max-w-4xl mx-auto px-6 -mt-12">
         
-        {/* Main Cover Image
+        {/* Main Cover Image */}
         <div className="w-full relative aspect-[21/9] rounded-3xl overflow-hidden shadow-sm border border-zinc-200 mb-12 bg-zinc-200">
           <Image 
-            src="/projects/healthcare-agentic-cover.jpg" 
+            src="/projects/healthcare-agentic-cover.png" 
             alt="Agentic Healthcare Analytics Interface"
             fill
             className="object-cover"
             priority 
           />
-        </div>  */}
+        </div> 
 
         {/* Executive Summary */}
         <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 mb-8">

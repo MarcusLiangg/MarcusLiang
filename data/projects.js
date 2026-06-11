@@ -61,7 +61,7 @@ export const PROJECTS_DATA = [
     date: "Jan 2026 - Apr 2026",
     categories: ["AI & Machine Learning", "Data Analytics"],
     shortDesc: "A multi-agent workflow that translates natural-language healthcare questions into auditable structured-data analysis using LangGraph and DuckDB.",
-    image: "/projects/healthcare-agentic-cover.jpg", 
+    image: "/projects/healthcare-agentic-cover.png", 
     technologies: ["LangGraph", "DuckDB", "ClinicalBERT", "SQL", "LLM Orchestration"] // Moved LLM to tech
   },
   {
@@ -70,7 +70,7 @@ export const PROJECTS_DATA = [
     date: "Jan 2026 - Apr 2026",
     categories: ["AI & Machine Learning", "Data Analytics"],
     technologies: ["Python", "LegalBERT", "PyTorch", "Pandas", "NLTK"],
-    image: "/projects/legal-nlp.jpg", 
+    image: "/projects/legal-nlp.png", 
     shortDesc: `This project introduces a comprehensive Natural Language Processing (NLP) pipeline designed to extract, process, and analyze complex legal documents and judicial rulings. Unlike standard text analytics, legal text requires highly specialized tokenization and entity recognition due to its dense terminology and rigid structure. The core engine utilizes fine-tuned Transformer models to perform named entity recognition (NER), outcome prediction, and sentiment classification across vast datasets of court cases.
     
     By bridging the gap between computational linguistics and the judicial system, this research provides a highly scalable framework for data-driven legal analytics, ultimately bringing greater transparency and efficiency to modern legal research.`
