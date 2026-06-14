@@ -594,7 +594,7 @@ export default function Portfolio() {
                 {
                   title: "Generative AI & Deep Learning",
                   emoji: "🧠",
-                  skills: "LangChain, LangGraph, FAISS (Vector Stores), PyTorch"
+                  skills: "LangChain, LangGraph, FAISS (Vector Stores), PyTorch, Ollama, OpenAI, Prompt Engineering"
                 },
                 {
                   title: "Machine Learning",
