@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Blocks, ShieldCheck, Scale, Award, Database, FileDigit, Wallet } from 'lucide-react';
+import { 
+  ArrowLeft, Blocks, ShieldCheck, Scale, Award, Database, 
+  FileDigit, Wallet, Briefcase, Target, Activity, Trophy 
+} from 'lucide-react';
 
 export default function CharityDaoProject() {
   return (
@@ -34,27 +37,75 @@ export default function CharityDaoProject() {
 
       <main className="max-w-4xl mx-auto px-6 -mt-12">
         
-        {/*Image Cover */}
-        <div className="w-full relative aspect-[21/9] rounded-3xl overflow-hidden shadow-sm border border-zinc-200 mb-12 bg-zinc-200">
+        {/* Project Image Cover (UPDATED DIMENSIONS) */}
+        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-12 bg-zinc-100 border border-zinc-200/50 shadow-sm">
           <Image 
             src="/projects/daov2.png" 
             alt="Charity DAO Interface and Smart Contract Architecture"
             fill
-            className="object-cover"
+            className="object-contain p-4"
             priority 
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
 
-        {/* About Section */}
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 mb-8">
-          <h2 className="text-2xl font-bold mb-6 border-b border-zinc-100 pb-4">The Trust Problem</h2>
-          <div className="prose prose-zinc prose-lg max-w-none text-zinc-600 space-y-6">
-            <p>
-              Trust in the charity sector is declining due to scams and a lack of transparency regarding how funds are actually utilized. Charity DAO solves this by leveraging blockchain technology to ensure that every single donation is traceable, immutable, and used strictly for its intended purpose.
-            </p>
-            <p>
-              This project implements a <strong>Decentralized Autonomous Organization (DAO)</strong> where donors receive Governance Tokens (GOV) in exchange for ETH contributions. Unlike traditional charities, funds are not released in a lump sum. Instead, we utilized a milestone-based disbursement system where NGOs must submit off-chain proof of work (uploaded to IPFS) which must be verified before the next tranche of funding is unlocked.
-            </p>
+        {/* --- THE STAR METHODOLOGY GRID --- */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 px-2 text-zinc-900">Project Breakdown (STAR)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Situation */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center">
+                  <Briefcase size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Situation</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Trust in the traditional charity sector is declining due to prevalent scams, administrative bloat, and a fundamental lack of transparency regarding how donor funds are actually utilized by NGOs.
+              </p>
+            </div>
+
+            {/* Task */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                  <Target size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Task</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                The objective was to architect a trustless, decentralized platform to restore donor confidence by ensuring every contribution is mathematically traceable, immutable, and strictly bound to verifiable impact metrics.
+              </p>
+            </div>
+
+            {/* Action */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                  <Activity size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Action</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Developed a full-stack Decentralized Autonomous Organization (DAO) using Solidity and React. Implemented a milestone-based disbursement contract where NGOs submit off-chain proof of work (anchored via IPFS) to unlock subsequent funding tranches.
+              </p>
+            </div>
+
+            {/* Result */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-emerald-200 ring-1 ring-emerald-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                  <Trophy size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Result</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Successfully deployed a functional Web3 charity platform that mathematically prevents fund misappropriation. The system democratizes governance by protecting against 'whale' dominance and establishes verifiable on-chain accountability.
+              </p>
+            </div>
+
           </div>
         </div>
 

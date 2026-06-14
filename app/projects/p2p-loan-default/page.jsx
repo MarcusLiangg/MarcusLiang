@@ -1,8 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Database, GitBranch, ShieldAlert, BarChart4, TrendingDown, Target, BrainCircuit } from 'lucide-react';
+import { 
+  ArrowLeft, Database, BrainCircuit, ShieldAlert, LineChart, 
+  Briefcase, Target, Activity, Trophy, Server, Network 
+} from 'lucide-react';
+import { PROJECTS_DATA } from '../../../data/projects';
 
 export default function P2PLoanProject() {
+  const project = PROJECTS_DATA.find(p => p.id === "p2p-loan-default");
+
   return (
     <div className="bg-zinc-50 min-h-screen text-zinc-900 font-sans selection:bg-blue-500/30 pb-24">
       
@@ -13,7 +19,7 @@ export default function P2PLoanProject() {
             <ArrowLeft size={16} />
             Back to Portfolio
           </Link>
-          <div className="text-sm font-mono text-zinc-500">BIG DATA / ML PIPELINE</div>
+          <div className="text-sm font-mono text-zinc-500">FINTECH / MACHINE LEARNING</div>
         </div>
       </header>
 
@@ -21,135 +27,136 @@ export default function P2PLoanProject() {
       <div className="bg-zinc-950 text-white pt-12 pb-24 px-6 rounded-b-[3rem] shadow-xl">
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
-            <ShieldAlert size={14} /> Risk Management
+            <Database size={14} /> Big Data Analytics
           </div>
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6">
-            P2P Loan Default Prediction System
+            {project.title}
           </h1>
           <p className="text-xl text-zinc-400 max-w-2xl leading-relaxed">
-            Developing a robust machine learning pipeline to analyze 2.9 million loan records, mitigating financial risk by identifying high-probability defaulters.
+            {project.shortDesc}
           </p>
         </div>
       </div>
 
       <main className="max-w-4xl mx-auto px-6 -mt-12">
         
-        {/* Optional Image Cover */}
-        <div className="w-full relative aspect-[21/9] rounded-3xl overflow-hidden shadow-sm border border-zinc-200 mb-12 bg-zinc-200">
+        {/* Project Image Cover */}
+        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-12 bg-zinc-100 border border-zinc-200/50 shadow-sm">
           <Image 
-            src="/projects/LC.png" 
-            alt="Data visualization of loan default predictions"
+            src={project.image} 
+            alt="P2P Loan Default Prediction Dashboard"
             fill
             className="object-cover"
             priority 
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
 
-        {/* Executive Summary Section */}
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 mb-8">
-          <h2 className="text-2xl font-bold mb-6 border-b border-zinc-100 pb-4">Executive Summary</h2>
-          <div className="prose prose-zinc prose-lg max-w-none text-zinc-600 space-y-6">
-            <p>
-              With the increasing reliance on credit for daily essentials and major purchases, managing risk has become imperative for financial institutions. This project utilizes Lending Club's extensive online dataset (spanning 2007 to 2020) to address the critical challenge of credit default prediction on Peer-to-Peer (P2P) platforms.
-            </p>
-            <p>
-              The core objective was to build an end-to-end Big Data machine learning pipeline capable of parsing 1.7 GB of data (over 2.9 million records). By identifying high-risk borrowers and forecasting the likelihood of default, the resulting model enables firms to minimize financial losses while safely maximizing profitable lending opportunities.
-            </p>
-          </div>
-        </div>
-
-        {/* The Pipeline & Methodology (Custom Data Science Layout) */}
-        <div className="bg-zinc-900 rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-800 mb-12 text-zinc-100">
-          <div className="flex items-center gap-3 mb-8 border-b border-zinc-800 pb-4">
-            <GitBranch className="text-blue-500" size={28} />
-            <h2 className="text-2xl font-bold">Data Pipeline & Methodology</h2>
-          </div>
-          
-          <div className="space-y-8">
-            {/* Step 1 */}
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/3 shrink-0">
-                <div className="inline-flex items-center gap-2 text-blue-400 font-bold mb-2">
-                  <Database size={18} /> Big Data Processing
-                </div>
-                <p className="text-sm text-zinc-400">Handling the 1.7GB Payload</p>
-              </div>
-              <div className="md:w-2/3 text-zinc-300">
-                Utilized <strong>PySpark</strong> within a Google Colab Pro environment to handle data cleaning and preprocessing for over 2.9 million rows. This included standardizing inconsistent formats and imputing missing values at scale.
-              </div>
-            </div>
-
-            {/* Step 2 */}
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/3 shrink-0">
-                <div className="inline-flex items-center gap-2 text-blue-400 font-bold mb-2">
-                  <BarChart4 size={18} /> Feature Engineering
-                </div>
-                <p className="text-sm text-zinc-400">PCA & Custom Indicators</p>
-              </div>
-              <div className="md:w-2/3 text-zinc-300">
-                Engineered custom risk indicators such as <code className="bg-zinc-800 px-1.5 py-0.5 rounded text-sm text-blue-300">credit_util_ratio</code> and <code className="bg-zinc-800 px-1.5 py-0.5 rounded text-sm text-blue-300">installment_to_income_ratio</code>. Applied Principal Component Analysis (PCA) to reduce 83 features down to 62, capturing 95% of the variance while drastically reducing computational load.
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/3 shrink-0">
-                <div className="inline-flex items-center gap-2 text-blue-400 font-bold mb-2">
-                  <Target size={18} /> Handling Imbalance
-                </div>
-                <p className="text-sm text-zinc-400">Overcoming the 13% Deficit</p>
-              </div>
-              <div className="md:w-2/3 text-zinc-300">
-                Defaulters represented only ~13% of the dataset. Implemented hybrid resampling strategies—specifically <strong>SMOTE + ENN</strong> (Synthetic Minority Over-sampling Technique combined with Edited Nearest Neighbours)—to aggressively improve the model’s ability to detect the minority class.
-              </div>
-            </div>
+        {/* --- THE STAR METHODOLOGY GRID --- */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 px-2 text-zinc-900">Project Breakdown (STAR)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            {/* Step 4 */}
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/3 shrink-0">
-                <div className="inline-flex items-center gap-2 text-blue-400 font-bold mb-2">
-                  <BrainCircuit size={18} /> Predictive Modeling
+            {/* Situation */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center">
+                  <Briefcase size={20} />
                 </div>
-                <p className="text-sm text-zinc-400">Algorithm Evaluation</p>
+                <h3 className="text-xl font-bold text-zinc-900">Situation</h3>
               </div>
-              <div className="md:w-2/3 text-zinc-300">
-                Trained and evaluated six different classifiers including Logistic Regression, Random Forest, and Gradient-Boosted Trees (GBT) to find the optimal balance between precision and recall.
-              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                {project.starContent.situation}
+              </p>
             </div>
+
+            {/* Task */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                  <Target size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Task</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                {project.starContent.task}
+              </p>
+            </div>
+
+            {/* Action */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                  <Activity size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Action</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                {project.starContent.action}
+              </p>
+            </div>
+
+            {/* Result */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-emerald-200 ring-1 ring-emerald-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                  <Trophy size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Result</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                {project.starContent.result}
+              </p>
+            </div>
+
           </div>
         </div>
 
-        {/* Business Impact / Key Findings */}
-        <h2 className="text-2xl font-bold mb-6 px-2">Key Findings & Business Impact</h2>
+        {/* Technical Architecture Notes */}
+        <h2 className="text-2xl font-bold mb-6 px-2">Data Engineering & ML Architecture</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200">
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200 hover:border-blue-200 transition-colors">
             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-              <TrendingDown size={24} />
+              <Server size={24} />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-zinc-900">Highest Risk Predictors</h3>
-            <p className="text-zinc-600 leading-relaxed">Analysis revealed that borrower hardship reasons, assigned loan grades, and home ownership status (specifically renting) were the strongest leading indicators of a default event.</p>
+            <h3 className="text-xl font-bold mb-3 text-zinc-900">Distributed Processing</h3>
+            <p className="text-zinc-600 leading-relaxed">Utilized Apache Spark (PySpark) to process 1.7GB of data efficiently, bypassing local memory constraints and accelerating the ETL pipeline.</p>
           </div>
           
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200">
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200 hover:border-blue-200 transition-colors">
             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-              <Target size={24} />
+              <Network size={24} />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-zinc-900">0.82 Model Recall</h3>
-            <p className="text-zinc-600 leading-relaxed">The optimized Random Forest model achieved a Recall score of 0.82, ensuring that the vast majority of potential defaulters are correctly identified prior to loan approval.</p>
+            <h3 className="text-xl font-bold mb-3 text-zinc-900">Class Imbalance Handling</h3>
+            <p className="text-zinc-600 leading-relaxed">Default records are inherently rare. Applied advanced resampling methods via Imbalanced-learn (e.g., SMOTE) to ensure the model learned risk factors rather than simply predicting the majority class.</p>
+          </div>
+
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200 hover:border-blue-200 transition-colors">
+            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+              <BrainCircuit size={24} />
+            </div>
+            <h3 className="text-xl font-bold mb-3 text-zinc-900">Feature Engineering</h3>
+            <p className="text-zinc-600 leading-relaxed">Extracted and engineered critical financial features such as debt-to-income (DTI) ratios, credit utilization, and historical payment behaviors to feed the classification algorithm.</p>
+          </div>
+
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200 hover:border-blue-200 transition-colors">
+            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+              <ShieldAlert size={24} />
+            </div>
+            <h3 className="text-xl font-bold mb-3 text-zinc-900">Recall-Optimized Metrics</h3>
+            <p className="text-zinc-600 leading-relaxed">Prioritized <em>Recall</em> (82%) over raw accuracy. In risk management, the cost of a False Negative (missing a default) far outweighs a False Positive (flagging a safe loan for review).</p>
           </div>
         </div>
 
         {/* Tech Stack */}
-        <div className="bg-white border border-zinc-200 rounded-3xl p-8 md:p-12 shadow-sm mb-8">
-            <h2 className="text-xl font-bold mb-6 text-zinc-900">Technologies Stack</h2>
+        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 md:p-12 shadow-sm mb-8">
+            <h2 className="text-xl font-bold mb-6 text-zinc-100">Technologies Stack</h2>
             <div className="flex flex-wrap gap-3">
-              <span className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold">PySpark</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">Google Colab Pro</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">Imbalanced-learn</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">Pandas & NumPy</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">Matplotlib</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">Matplotlib</span>
+              {project.technologies.map(tech => (
+                <span key={tech} className="px-4 py-2 bg-zinc-800 text-zinc-300 border border-zinc-700 rounded-lg text-sm font-semibold">
+                  {tech}
+                </span>
+              ))}
             </div>
         </div>
 

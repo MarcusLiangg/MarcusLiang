@@ -4,7 +4,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Link from 'next/link';
-import { TerminalSquare, GraduationCap, FolderGit2, Code2, Mail, FileDown, Briefcase, ArrowUpRight } from 'lucide-react';
+import { TerminalSquare, GraduationCap, FolderGit2, Code2, Mail, FileDown, Briefcase, ArrowUpRight, Target, Trophy } from 'lucide-react';
 import Terminal from '../components/Terminal';
 import { PROJECTS_DATA } from '../data/projects';
 import Image from 'next/image';
@@ -121,7 +121,61 @@ export default function Portfolio() {
               {/* Optional: The vertical timeline line itself */}
               <div className="absolute left-[39px] md:left-[47px] top-10 bottom-10 w-0.5 bg-zinc-100 z-0"></div>
 
-              {/* Job 1: X-Star Technology */}
+              {/* Job 1: PhillipCapital (NEW - Most Recent) */}
+              {/* Apply Animations Here */}
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                whileHover={{ scale: 1.02 }}
+                className="relative z-10 bg-zinc-50 p-8 rounded-2xl border border-zinc-200 shadow-sm transition-shadow duration-300 group hover:shadow-md hover:border-zinc-300 hover:bg-white mb-8"
+              >
+                 <div className="flex flex-col md:flex-row md:items-start justify-between mb-6 gap-4">
+                    {/* PhillipCapital: Logo and Title Container */}
+                    <div className="flex items-center gap-4 md:gap-5">
+                        <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border border-zinc-200 bg-white shadow-sm shrink-0 p-2">
+                          <Image 
+                            src="/experience/phillip-logo.jpg" 
+                            alt="PhillipCapital Logo" 
+                            fill 
+                            className="object-contain p-1" 
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
+                        <div>
+                            <h3 className="text-2xl font-bold text-zinc-900 leading-tight">Business Analyst Intern</h3>
+                            <p className="text-lg text-blue-600 font-semibold mt-1">PhillipCapital</p>
+                        </div>
+                    </div>
+
+                    <span className="px-4 py-1.5 bg-white border border-zinc-200 text-zinc-600 rounded-full text-sm font-semibold tracking-wide whitespace-nowrap self-start">
+                      May 2026 – Jul 2026
+                    </span>
+                 </div>
+                 
+                 <div className="flex flex-wrap gap-2 mb-6">
+                    <span className="px-2.5 py-1 bg-blue-100/50 text-blue-700 rounded-md text-xs font-semibold">RPA Automation</span>
+                    <span className="px-2.5 py-1 bg-blue-100/50 text-blue-700 rounded-md text-xs font-semibold">AI Integration</span>
+                    <span className="px-2.5 py-1 bg-white border border-zinc-200 text-zinc-600 rounded-md text-xs font-semibold">Business Analytics</span>
+                    <span className="px-2.5 py-1 bg-white border border-zinc-200 text-zinc-600 rounded-md text-xs font-semibold">Financial Services</span>
+                 </div>
+
+                 <div className="mb-6">
+                   <h4 className="font-bold text-zinc-900 mb-3 text-sm uppercase tracking-wider">Key Responsibilities</h4>
+                   <ul className="space-y-2 text-zinc-600">
+                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Developing an AI-integrated RPA framework to not only automate standard reporting but also parse data to extract actionable business insights.</li>
+                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Spearheading integration of mainstream AI tools with UiPath workflows, transforming static reports into dynamic, insight-driven analytics while saving up to 8 man-hours per reporting cycle.</li>
+                   </ul>
+                 </div>
+
+                 <div className="p-4 bg-white rounded-xl border border-zinc-100 text-sm">
+                   <h4 className="font-bold text-zinc-900 mb-2">Technologies Used</h4>
+                   <p className="text-zinc-600"><strong className="text-zinc-900">Tools:</strong> UiPath, AI Models, Automation Frameworks</p>
+                 </div>
+              </motion.div>
+
+              {/* Job 2: X-Star Technology */}
               {/* Apply Animations Here */}
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
@@ -179,7 +233,7 @@ export default function Portfolio() {
                  </div>
               </motion.div>
 
-              {/* Job 2: Shopee */}
+              {/* Job 3: Shopee */}
               {/* Apply Animations Here */}
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
@@ -262,15 +316,36 @@ export default function Portfolio() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="relative group cursor-default"
               >
-                {/* Timeline Dot (Now animates color on hover!) */}
+                {/* Timeline Dot */}
                 <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-[41px] top-1 border-4 border-white group-hover:scale-125 transition-transform duration-300" />
                 
                 {/* Content */}
-                <div className="bg-white p-6 rounded-2xl border border-transparent shadow-sm group-hover:shadow-md group-hover:border-blue-100 transition-all duration-300">
-                  <span className="text-sm font-semibold text-blue-600 tracking-wider uppercase">Aug 2023 - Dec 2026</span>
-                  <h3 className="text-2xl font-bold mt-1 text-zinc-900">National University of Singapore</h3>
-                  <p className="text-lg text-zinc-600 font-medium">B.Sc. Business Analytics (Honours)</p>
-                  <p className="text-zinc-500 mt-3 leading-relaxed">
+                <div className="relative overflow-hidden bg-white p-6 rounded-2xl border border-transparent shadow-sm group-hover:shadow-md group-hover:border-blue-100 transition-all duration-300">
+                  
+                  {/* NEW: Semi-Blue Highlight Bar */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-500/80 transition-all duration-300 group-hover:bg-blue-600" />
+
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-5 mb-4 pl-2"> {/* Added pl-2 to push content slightly right of the bar */}
+                    <div className="flex items-center gap-4 md:gap-5">
+                      {/* School Logo Container */}
+                      <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border border-zinc-200 bg-white shadow-sm shrink-0">
+                        <Image 
+                          src="/education/nus.jpg" 
+                          alt="National University of Singapore Logo" 
+                          fill 
+                          className="object-contain p-2" 
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-sm font-semibold text-blue-600 tracking-wider uppercase">Aug 2023 - Dec 2026</span>
+                        <h3 className="text-2xl font-bold mt-1 text-zinc-900">National University of Singapore</h3>
+                        <p className="text-lg text-zinc-600 font-medium">B.Sc. Business Analytics (Honours)</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-zinc-500 mt-3 leading-relaxed border-t border-zinc-100 pt-4 pl-2">
                     <strong className="text-zinc-700">Specialization:</strong> Machine Learning.<br />
                     <strong className="text-zinc-700">Relevant Coursework:</strong> BT4221 Advanced Analytics with Big Data Technologies, Machine Learning for Predictive Data Analytics.
                   </p>
@@ -282,18 +357,39 @@ export default function Portfolio() {
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }} // 0.2s delay creates the cascade effect
+                transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
                 className="relative group cursor-default"
               >
                 {/* Timeline Dot */}
                 <div className="absolute w-4 h-4 bg-zinc-400 group-hover:bg-blue-400 rounded-full -left-[41px] top-1 border-4 border-white group-hover:scale-125 transition-all duration-300" />
                 
                 {/* Content */}
-                <div className="bg-white p-6 rounded-2xl border border-transparent shadow-sm group-hover:shadow-md group-hover:border-blue-100 transition-all duration-300">
-                  <span className="text-sm font-semibold text-zinc-500 tracking-wider uppercase">Apr 2018 - May 2021</span>
-                  <h3 className="text-2xl font-bold mt-1 text-zinc-900">Ngee Ann Polytechnic</h3>
-                  <p className="text-lg text-zinc-600 font-medium">Diploma with Merit in Financial Informatics</p>
-                  <p className="text-zinc-500 mt-3 leading-relaxed">
+                <div className="relative overflow-hidden bg-white p-6 rounded-2xl border border-transparent shadow-sm group-hover:shadow-md group-hover:border-blue-100 transition-all duration-300">
+                  
+                  {/* NEW: Semi-Blue Highlight Bar */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-400/60 transition-all duration-300 group-hover:bg-blue-500/80" />
+
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-5 mb-4 pl-2">
+                    <div className="flex items-center gap-4 md:gap-5">
+                      {/* School Logo Container */}
+                      <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border border-zinc-200 bg-white shadow-sm shrink-0">
+                        <Image 
+                          src="/education/np.png" 
+                          alt="Ngee Ann Polytechnic Logo" 
+                          fill 
+                          className="object-contain p-2" 
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-sm font-semibold text-zinc-500 tracking-wider uppercase">Apr 2018 - May 2021</span>
+                        <h3 className="text-2xl font-bold mt-1 text-zinc-900">Ngee Ann Polytechnic</h3>
+                        <p className="text-lg text-zinc-600 font-medium">Diploma with Merit in Financial Informatics</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-zinc-500 mt-3 leading-relaxed border-t border-zinc-100 pt-4 pl-2">
                     <strong className="text-zinc-700">Specialization:</strong> Financial Analytics. <br/> 
                     <strong className="text-zinc-700">Relevant Coursework:</strong> Deep Learning, Predictive Analytics, Applied Analytics.
                   </p>
@@ -303,10 +399,9 @@ export default function Portfolio() {
             </div>
           </div>
         </section>
-
-{/* Section: Projects (NEW MASTER-DETAIL SPLIT VIEW) */}
+        {/* Section: Projects (Master-Detail Split View) */}
         <section id="projects" className="min-h-screen py-24 px-6 bg-white flex flex-col items-center justify-center">
-          <div className="max-w-6xl w-full">
+          <div className="max-w-7xl mx-auto w-full"> {/* Widened slightly to max-w-7xl for the new grid */}
             
             <div className="flex items-center gap-3 mb-8">
               <FolderGit2 className="text-blue-600" size={32} />
@@ -318,7 +413,11 @@ export default function Portfolio() {
               {ALL_CATEGORIES.map(category => (
                 <button
                   key={category}
-                  onClick={() => setActiveCategory(category)}
+                  onClick={() => {
+                    setActiveCategory(category);
+                    const newFiltered = PROJECTS_DATA.filter(p => category === "All" || p.categories.includes(category));
+                    if (newFiltered.length > 0) setSelectedProjectId(newFiltered[0].id);
+                  }}
                   className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                     activeCategory === category 
                       ? "bg-blue-600 text-white shadow-md" 
@@ -331,7 +430,7 @@ export default function Portfolio() {
             </div>
 
             {/* Split Layout Container */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-h-[600px]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 min-h-[600px]">
               
               {/* LEFT PANEL: Project List (Master) */}
               <div className="lg:col-span-4 flex flex-col gap-3">
@@ -348,14 +447,14 @@ export default function Portfolio() {
                         onClick={() => setSelectedProjectId(project.id)}
                         className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 group ${
                           isSelected 
-                            ? "bg-blue-50 border-blue-200 shadow-md ring-1 ring-blue-500/20" 
-                            : "bg-zinc-50 border-zinc-200 hover:bg-white hover:border-zinc-300 hover:shadow-sm"
+                            ? "bg-blue-50 border-blue-200 shadow-sm" 
+                            : "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-sm"
                         }`}
                       >
                         <h3 className={`text-lg font-bold mb-1 transition-colors ${isSelected ? "text-blue-700" : "text-zinc-900 group-hover:text-blue-600"}`}>
                           {project.title}
                         </h3>
-                        <div className={`text-xs font-semibold uppercase tracking-wider ${isSelected ? "text-blue-500" : "text-zinc-500"}`}>
+                        <div className={`text-xs font-bold uppercase tracking-wider ${isSelected ? "text-blue-500" : "text-zinc-400"}`}>
                           {project.date}
                         </div>
                       </motion.button>
@@ -374,14 +473,36 @@ export default function Portfolio() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="bg-white border border-zinc-200 rounded-3xl p-6 md:p-8 shadow-xl h-full flex flex-col relative overflow-hidden"
+                      className="bg-white border border-zinc-200 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col relative h-full"
                     >
-                      {/* Optional subtle background glow for the active project */}
-                      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
+                      
+                      {/* 1. NEW HEADER: Title, Date, Button, and Tech Stack up top! */}
+                      <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-6 gap-6 border-b border-zinc-100 pb-6">
+                        <div className="flex-grow">
+                          <h2 className="text-3xl font-bold text-zinc-900 tracking-tight mb-2">{activeProject.title}</h2>
+                          <p className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-4">{activeProject.date}</p>
+                          
+                          {/* Tech Stack moved up for immediate visibility */}
+                          <div className="flex flex-wrap gap-2">
+                            {activeProject.technologies?.map(tech => (
+                              <span key={tech} className="px-3 py-1 bg-zinc-100 text-zinc-700 rounded-md text-xs font-semibold border border-zinc-200/60">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <Link 
+                          href={`/projects/${activeProject.id}`} 
+                          className="flex items-center justify-center gap-1.5 px-6 py-3 bg-zinc-900 text-white text-sm font-semibold rounded-xl hover:bg-zinc-800 transition-colors shrink-0 shadow-md"
+                        >
+                          View Case Study <ArrowUpRight size={18} />
+                        </Link>
+                      </div>
 
-                      {/* Featured Image */}
+                      {/* 2. BANNER IMAGE: Shorter, wider, less intrusive */}
                       {activeProject.image && (
-                        <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-8 border border-zinc-100 shadow-inner bg-zinc-100">
+                        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-8 bg-zinc-100 shrink-0 border border-zinc-200/50">
                           <Image 
                             src={activeProject.image} 
                             alt={activeProject.title}
@@ -391,42 +512,43 @@ export default function Portfolio() {
                         </div>
                       )}
 
-                      {/* Project Header & Link */}
-                      <div className="flex justify-between items-start mb-4 gap-4 relative z-10">
-                        <div>
-                          <h2 className="text-3xl font-bold text-zinc-900 tracking-tight">{activeProject.title}</h2>
-                          <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mt-2">{activeProject.date}</p>
-                        </div>
-                        <Link 
-                          href={`/projects/${activeProject.id}`} 
-                          className="flex items-center gap-1 px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-full hover:bg-blue-600 transition-colors shrink-0"
-                        >
-                          View Case Study <ArrowUpRight size={16} />
-                        </Link>
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-zinc-600 text-lg leading-relaxed mb-8 relative z-10 flex-grow">
-                        {activeProject.shortDesc}
-                      </p>
-
-                      {/* Tags */}
-                      <div className="mt-auto relative z-10">
-                        <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">Technologies & Stack</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {activeProject.technologies?.map(tech => (
-                            <span key={tech} className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
+                      {/* 3. CONTENT: Side-by-Side Dashboard layout for STAR */}
+                      <div className="flex-grow">
+                        {activeProject.starContent ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Challenge Column */}
+                            <div className="bg-zinc-50 p-5 rounded-2xl border border-zinc-200/80 h-full">
+                              <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                <Target size={16} className="text-blue-500" /> The Challenge
+                              </h4>
+                              <p className="text-zinc-600 text-sm leading-relaxed">
+                                {activeProject.starContent.situation}
+                              </p>
+                            </div>
+                            
+                            {/* Result Column */}
+                            <div className="bg-emerald-50/30 p-5 rounded-2xl border border-emerald-100 h-full">
+                              <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                <Trophy size={16} className="text-emerald-600" /> The Result
+                              </h4>
+                              <p className="text-zinc-600 text-sm leading-relaxed">
+                                {activeProject.starContent.result}
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="bg-zinc-50 p-6 rounded-2xl border border-zinc-100">
+                            <p className="text-zinc-600 text-base leading-relaxed">
+                              {activeProject.shortDesc}
+                            </p>
+                          </div>
+                        )}
                       </div>
 
                     </motion.div>
                   </AnimatePresence>
                 ) : (
-                  // Fallback empty state if no projects match a filter
-                  <div className="h-full flex items-center justify-center text-zinc-400 font-medium bg-zinc-50 rounded-3xl border border-zinc-200 border-dashed">
+                  <div className="h-full flex items-center justify-center text-zinc-400 font-medium bg-zinc-50 rounded-3xl border border-zinc-200 border-dashed min-h-[400px]">
                     No projects found for this category.
                   </div>
                 )}
@@ -479,7 +601,7 @@ export default function Portfolio() {
                 },
                 {
                   title: "Deployment & Model Serving",
-                  skills: "FastAPI, Flask, MLFlow, DataOps, DevOps, GitHub (Version Control)"
+                  skills: "Docker, FastAPI, Flask, MLFlow, DataOps, DevOps, GitHub (Version Control)"
                 },
                 {
                   title: "Programming Languages & Runtimes",

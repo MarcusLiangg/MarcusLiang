@@ -4,7 +4,7 @@ import './globals.css';
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" data-scroll-behavior="smooth">
       {/* 
         The 'cursor-none' class hides the default pointer, 
         but we wrap it in a custom fine-pointer check in globals.css 

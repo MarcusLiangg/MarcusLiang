@@ -2,7 +2,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { 
   ArrowLeft, Scale, FileText, BrainCircuit, Database, Target, 
-  ShieldAlert, BarChart4, ShieldCheck, Clock, Bot, Cpu, BookOpen, Network, Layers 
+  ShieldAlert, BarChart4, ShieldCheck, Clock, Bot, Cpu, BookOpen, 
+  Network, Layers, Briefcase, Activity, Trophy 
 } from 'lucide-react';
 
 export default function JudicialNLPProject() {
@@ -38,26 +39,74 @@ export default function JudicialNLPProject() {
       <main className="max-w-4xl mx-auto px-6 -mt-12">
         
         {/* Project Image Cover */}
-        <div className="w-full relative aspect-[21/9] rounded-3xl overflow-hidden shadow-sm mb-12">
+        <div className="w-full relative aspect-[21/9] h-48 md:h-64 rounded-3xl overflow-hidden shadow-sm mb-12 bg-zinc-200">
           <Image 
             src="/projects/legal-nlp.png" 
             alt="Data visualization of Legal NLP analysis architecture"
             fill
             className="object-cover"
             priority 
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
           />
         </div>
 
-        {/* Executive Summary Section */}
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 mb-8">
-          <h2 className="text-2xl font-bold mb-6 border-b border-zinc-100 pb-4">Executive Summary</h2>
-          <div className="prose prose-zinc prose-lg max-w-none text-zinc-600 space-y-6">
-            <p>
-              Unlike standard text analytics, legal text requires highly specialized extraction and representation due to its dense terminology and rigid structure. This project bridges the gap between computational linguistics and the judicial system by converting raw court judgments into model-ready rows.
-            </p>
-            <p>
-              A major focus of this architecture is leakage control—ensuring the model evaluates pre-decision factual material without being artificially rewarded for reading outcome clues hidden within the text.
-            </p>
+        {/* --- THE STAR METHODOLOGY GRID --- */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 px-2 text-zinc-900">Project Breakdown (STAR)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Situation */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center">
+                  <Briefcase size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Situation</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Standard text analytics models fail on legal texts due to dense terminology, rigid structures, and the high risk of 'data leakage'—where models artificially inflate performance by reading outcome clues hidden within the judgment.
+              </p>
+            </div>
+
+            {/* Task */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                  <Target size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Task</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                The objective was to architect a specialized Natural Language Processing (NLP) pipeline capable of accurately extracting, processing, and analyzing complex judicial rulings without relying on post-decision factual material.
+              </p>
+            </div>
+
+            {/* Action */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                  <Activity size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Action</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Developed a custom hierarchical architecture using PyTorch, LegalBERT, and XGBoost. Implemented rigorous data leakage controls, including temporal isolation and IRAC-inspired extraction, to strictly separate pre-decision facts from final judicial conclusions.
+              </p>
+            </div>
+
+            {/* Result */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-emerald-200 ring-1 ring-emerald-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                  <Trophy size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Result</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Delivered a scalable, robust framework for data-driven legal analytics. By safely converting raw judgments into model-ready rows, the pipeline prevents artificial outcome inflation and brings greater empirical transparency to modern legal research.
+              </p>
+            </div>
+
           </div>
         </div>
 

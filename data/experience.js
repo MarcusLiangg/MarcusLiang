@@ -1,5 +1,14 @@
 export const EXPERIENCE_DATA = [
   {
+    company: "PhillipCapital",
+    role: "Business Analyst Intern",
+    date: "May 2026 – Jul 2026",
+    responsibilities: [
+      "Developing an AI-integrated RPA framework to not only automate standard reporting but also parse data to extract actionable business insights.",
+      "Spearheading integration of mainstream AI tools with UiPath workflows, transforming static reports into dynamic, insight-driven analytics while saving up to 8 man-hours per reporting cycle."
+    ]
+  },
+  {
     company: "X-Star Technology",
     role: "Data Scientist Intern",
     date: "Dec 2024 – Dec 2025",

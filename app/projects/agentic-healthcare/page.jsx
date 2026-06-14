@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Stethoscope, GitMerge, Database, ShieldAlert, CheckCircle, Activity, BrainCircuit } from 'lucide-react';
+import { 
+  ArrowLeft, Stethoscope, GitMerge, Database, ShieldAlert, CheckCircle, 
+  Activity, BrainCircuit, BookOpen, Briefcase, Target, Trophy 
+} from 'lucide-react';
 
 export default function AgenticHealthcareProject() {
   return (
@@ -40,26 +43,74 @@ export default function AgenticHealthcareProject() {
       <main className="max-w-4xl mx-auto px-6 -mt-12">
         
         {/* Main Cover Image */}
-        <div className="w-full relative aspect-[21/9] rounded-3xl overflow-hidden shadow-sm border border-zinc-200 mb-12 bg-zinc-200">
+        <div className="w-full relative h-48 md:h-64 rounded-2xl overflow-hidden shadow-sm border border-zinc-200 mb-12 bg-zinc-100 flex items-center justify-center">
           <Image 
             src="/projects/healthcare-agentic-cover.png" 
             alt="Agentic Healthcare Analytics Interface"
             fill
             className="object-cover"
             priority 
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
           />
         </div> 
 
-        {/* Executive Summary */}
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 mb-8">
-          <h2 className="text-2xl font-bold mb-6 border-b border-zinc-100 pb-4">Executive Summary</h2>
-          <div className="prose prose-zinc prose-lg max-w-none text-zinc-600 space-y-6">
-            <p>
-              Healthcare datasets are often structured, relational, and highly sensitive. While LLMs are powerful, a useful clinical assistant must do more than just generate generic SQL: it must clarify intent, ground terms to known medical fields, expose assumptions, and strictly preserve auditability.
-            </p>
-            <p>
-              As a member of this project team, we explored how a healthcare analytics assistant could help clinical and research users ask questions over structured health data <strong>without hiding the analytical path behind a black-box response.</strong>
-            </p>
+        {/* --- THE STAR METHODOLOGY GRID --- */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 px-2 text-zinc-900">Project Breakdown (STAR)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Situation */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center">
+                  <Briefcase size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Situation</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Clinical experts often face significant delays when trying to validate medical hypotheses because they rely heavily on specialized data engineers to query and extract information from complex, highly-regulated healthcare databases.
+              </p>
+            </div>
+
+            {/* Task */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                  <Target size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Task</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                The objective was to bridge the gap between clinical expertise and data science by building an intelligent copilot that allows medical professionals to query complex datasets directly using natural language, without waiting for human intermediaries.
+              </p>
+            </div>
+
+            {/* Action */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                  <Activity size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Action</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Engineered a multi-agent AI workflow using LangGraph and DuckDB. The system uses ClinicalBERT and FAISS to ground medical terminology to actual database schemas, dynamically generating accurate SQL queries while enforcing strict Human-In-The-Loop (HITL) checkpoints.
+              </p>
+            </div>
+
+            {/* Result */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-emerald-200 ring-1 ring-emerald-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                  <Trophy size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Result</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Created an auditable, transparent analytics assistant that empowers clinicians to rapidly explore health data. This drastically reduces the turnaround time for hypothesis testing while preserving data security and exposing the analytical path for clinical review.
+              </p>
+            </div>
+
           </div>
         </div>
 
@@ -178,7 +229,22 @@ export default function AgenticHealthcareProject() {
               </div>
             </div>
         </div>
-
+        
+        {/* Selected References */}
+        <div className="bg-white border border-zinc-200 rounded-3xl p-8 md:p-12 shadow-sm mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <BookOpen className="text-rose-600" size={24} />
+            <h2 className="text-xl font-bold text-zinc-900">Selected References</h2>
+          </div>
+          <ul className="text-sm text-zinc-600 space-y-3 list-disc pl-5">
+            <li>Yao et al. (2023), <em>ReAct: Synergizing Reasoning and Acting in Language Models.</em></li>
+            <li>Wang et al. (2023), <em>Plan-and-Solve Prompting.</em></li>
+            <li>Alsentzer et al. (2019), <em>Publicly Available Clinical BERT Embeddings.</em></li>
+            <li>Hollmann et al. (2023), <em>CAAFE: Context-Aware Automated Feature Engineering for Tabular Datasets.</em></li>
+            <li>OHDSI (2024), <em>OMOP Common Data Model v5.4.</em></li>
+            <li>LangChain AI (2024), <em>LangGraph: Stateful Multi-Actor Applications with LLMs.</em></li>
+          </ul>
+        </div>
       </main>
     </div>
   );

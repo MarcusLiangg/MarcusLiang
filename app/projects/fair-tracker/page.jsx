@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Search, TrendingUp, MapPin, ListChecks, Bell, MessageSquare, ExternalLink, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Search, TrendingUp, MapPin, ListChecks, Bell, MessageSquare, ExternalLink, RefreshCw, Briefcase, Target, Activity, Trophy } from 'lucide-react';
 
 export default function FairTrackerProject() {
   return (
@@ -33,30 +33,80 @@ export default function FairTrackerProject() {
       </div>
 
       <main className="max-w-4xl mx-auto px-6 -mt-12">
-        <div className="w-full relative aspect-video rounded-3xl overflow-hidden shadow-sm border border-zinc-200 mb-12 bg-zinc-200">
+        
+        {/* Project Image Cover (UPDATED DIMENSIONS) */}
+        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-12 bg-zinc-100 border border-zinc-200/50 shadow-sm">
           <Image 
             src="/projects/fair_tracker.jpg" 
             alt="The Fair Tracker App Interface"
             fill
             className="object-cover"
             priority 
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
 
-        {/* About Section */}
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 mb-8">
-          <h2 className="text-2xl font-bold mb-6 border-b border-zinc-100 pb-4">Project Overview</h2>
-          <div className="prose prose-zinc prose-lg max-w-none text-zinc-600 space-y-6">
-            <p>
-              In recent years, rising living costs and food inflation have made grocery shopping increasingly stressful for many Singaporeans. Global economic disruptions have affected local pricing, making transparency more essential than ever. 
-            </p>
-            <p>
-              The Fair Tracker was built to address this challenge—a centralized, user-friendly platform that empowers consumers to compare prices across major supermarket chains (NTUC, Sheng Siong, etc.) to make smarter, cost-effective decisions. Our platform serves a diverse audience, from budget-conscious students to families and seniors. By creating an account, users unlock personalized tools to track spending, monitor price drops, and manage grocery lists dynamically.
-            </p>
+        {/* --- THE STAR METHODOLOGY GRID --- */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 px-2 text-zinc-900">Project Breakdown (STAR)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Situation */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center">
+                  <Briefcase size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Situation</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Rising living costs and global economic disruptions have driven up food inflation, making grocery shopping increasingly stressful for Singaporeans. Consumers lacked a transparent, centralized way to find the best prices across competing supermarket chains.
+              </p>
+            </div>
+
+            {/* Task */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                  <Target size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Task</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                As part of an application development coursework team, the objective was to build a full-stack, user-friendly web platform to empower budget-conscious students, families, and seniors to make smarter, cost-effective grocery purchasing decisions.
+              </p>
+            </div>
+
+            {/* Action */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                  <Activity size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Action</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Executed the project using Agile/Scrum methodology over two intensive sprints, implementing 24 core user stories. Built the platform using Vue.js and Firebase, integrating Google Maps API for store localization and VueChartkick to visualize historical price fluctuations.
+              </p>
+            </div>
+
+            {/* Result */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-emerald-200 ring-1 ring-emerald-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                  <Trophy size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Result</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Delivered a comprehensive application featuring real-time price comparisons across major chains, personalized smart grocery lists, and automated price-drop alerts, fostering a transparent and community-driven shopping experience.
+              </p>
+            </div>
+
           </div>
         </div>
 
-        {/* Agile Methodology Section (Custom designed for this project) */}
+        {/* Agile Methodology Section */}
         <div className="bg-blue-50/50 rounded-3xl p-8 md:p-12 shadow-sm border border-blue-100 mb-12">
           <div className="flex items-center gap-3 mb-6 border-b border-blue-200/50 pb-4">
             <RefreshCw className="text-blue-600" size={28} />
@@ -130,7 +180,6 @@ export default function FairTrackerProject() {
               <span className="px-3 py-1.5 bg-zinc-800 border border-zinc-700 text-zinc-300 rounded-lg text-sm font-semibold">Vuetify</span>
               <span className="px-3 py-1.5 bg-zinc-800 border border-zinc-700 text-zinc-300 rounded-lg text-sm font-semibold">VueChartkick</span>
               <span className="px-3 py-1.5 bg-zinc-800 border border-zinc-700 text-zinc-300 rounded-lg text-sm font-semibold">Firebase</span>
-              <span className="px-3 py-1.5 bg-zinc-800 border border-zinc-700 text-zinc-300 rounded-lg text-sm font-semibold">VueChartkick</span>
               <span className="px-3 py-1.5 bg-zinc-800 border border-zinc-700 text-zinc-300 rounded-lg text-sm font-semibold">Google Maps API</span>
               <span className="px-3 py-1.5 bg-zinc-800 border border-zinc-700 text-zinc-300 rounded-lg text-sm font-semibold">JavaScript</span>
               <span className="px-3 py-1.5 bg-zinc-800 border border-zinc-700 text-zinc-300 rounded-lg text-sm font-semibold">HTML5</span>

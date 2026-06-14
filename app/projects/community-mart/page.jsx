@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, ShoppingCart, Bot, Gavel, LayoutDashboard} from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Bot, Gavel, LayoutDashboard, Briefcase, Target, Activity, Trophy } from 'lucide-react';
 
 export default function CommunityMartProject() {
   return (
@@ -34,28 +34,75 @@ export default function CommunityMartProject() {
 
       <main className="max-w-4xl mx-auto px-6 -mt-12">
         
-        {/* Optional Image Cover */}
-        {/* If you have a screenshot of the app, it will render here. If not, you can delete this block! */}
-        <div className="w-full relative aspect-video rounded-3xl overflow-hidden shadow-sm border border-zinc-200 mb-12 bg-zinc-200">
+        {/* Project Image Cover (UPDATED DIMENSIONS) */}
+        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-12 bg-zinc-100 border border-zinc-200/50 shadow-sm">
           <Image 
             src="/projects/hack4good_2025.jpg" 
             alt="Community Mart App Interface"
             fill
             className="object-cover"
             priority    
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
 
-        {/* About Section */}
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 mb-8">
-          <h2 className="text-2xl font-bold mb-6 border-b border-zinc-100 pb-4">Project Overview</h2>
-          <div className="prose prose-zinc prose-lg max-w-none text-zinc-600 space-y-6">
-            <p>
-              Developed during Hack 4 Good 2025, this project aimed to digitize the distribution of essential goods for community residents. Moving away from manual, paper-based tracking, we built a centralized digital mini-mart that empowers residents to purchase and preorder daily necessities using a digital voucher point system.
-            </p>
-            <p>
-              Teaming up with 4 others, we focused on creating a seamless user experience that bridges the gap between technology and community service, ensuring accessibility for residents while providing robust management tools for administrators.
-            </p>
+        {/* --- THE STAR METHODOLOGY GRID --- */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 px-2 text-zinc-900">Project Breakdown (STAR)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Situation */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center">
+                  <Briefcase size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Situation</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Community organizations relied on manual, paper-based tracking for the distribution of essential goods. This outdated approach was highly inefficient, difficult for administrators to manage, and created friction for residents trying to access daily necessities.
+              </p>
+            </div>
+
+            {/* Task */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                  <Target size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Task</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Participating in Hack 4 Good 2025, our team of five was tasked with modernizing this distribution process. The goal was to design a centralized digital mini-mart that bridged the gap between modern technology and accessible community service.
+              </p>
+            </div>
+
+            {/* Action */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                  <Activity size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Action</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Developed a full-stack application featuring a digital voucher point system that empowered residents to easily purchase and preorder necessities. We prioritized a seamless frontend UX—including an AI chatbot (Botpress) for instant support—while building robust backend tracking tools.
+              </p>
+            </div>
+
+            {/* Result */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-emerald-200 ring-1 ring-emerald-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                  <Trophy size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900">Result</h3>
+              </div>
+              <p className="text-zinc-600 leading-relaxed">
+                Successfully replaced manual tracking with a streamlined digital ecosystem. The platform eliminated administrative bottlenecks and provided residents with a dignified, modernized, and highly accessible way to utilize their community vouchers.
+              </p>
+            </div>
+
           </div>
         </div>
 
