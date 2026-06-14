@@ -558,7 +558,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Section: Skills */}
+{/* Section: Skills */}
         <section id="skills" className="min-h-screen py-24 px-6 bg-zinc-50 flex flex-col items-center justify-center overflow-hidden">
           <div className="max-w-6xl w-full">
             
@@ -593,34 +593,42 @@ export default function Portfolio() {
               {[
                 {
                   title: "Generative AI & Deep Learning",
+                  emoji: "🧠",
                   skills: "LangChain, LangGraph, FAISS (Vector Stores), PyTorch"
                 },
                 {
                   title: "Machine Learning",
+                  emoji: "🤖",
                   skills: "Supervised & Unsupervised Learning (Random Forest, XGBoost, Clustering), Scikit-learn, Model Validation (PSI)"
                 },
                 {
                   title: "Deployment & Model Serving",
+                  emoji: "🚀",
                   skills: "Docker, FastAPI, Flask, MLFlow, DataOps, DevOps, GitHub (Version Control)"
                 },
                 {
                   title: "Programming Languages & Runtimes",
+                  emoji: "💻",
                   skills: "Python, SQL (MySQL), Java, C#, R, JavaScript, Node.js"
                 },
                 {
                   title: "Data Engineering & Cloud",
+                  emoji: "🗄️",
                   skills: "Databricks, Apache Spark, AWS, Snowflake, ETL Pipelines"
                 },
                 {
                   title: "Data Analytics & BI",
+                  emoji: "📊",
                   skills: "Pandas, NumPy, Power BI (DAX), Tableau, Matplotlib, Vintage Analysis"
                 },
                 {
                   title: "Automation & Tools",
+                  emoji: "⚙️",
                   skills: "UiPath, Advanced Excel"
                 },
                 {
                   title: "Core Competencies",
+                  emoji: "💡",
                   skills: "Analytical Problem-Solving, Continuous Learning, Adaptability, Communication, Teamwork, Time Management"
                 }
               ].map((category, index) => (
@@ -633,7 +641,8 @@ export default function Portfolio() {
                   whileHover={{ scale: 1.02 }} // Subtle lift on hover
                   className="p-8 rounded-2xl border border-zinc-200 bg-white hover:border-blue-200 hover:shadow-md transition-all group flex flex-col"
                 >
-                  <h3 className="font-bold text-xl mb-4 text-zinc-900 group-hover:text-blue-600 transition-colors">
+                  <h3 className="font-bold text-xl mb-4 text-zinc-900 group-hover:text-blue-600 transition-colors flex items-center gap-2">
+                    <span className="text-2xl">{category.emoji}</span>
                     {category.title}
                   </h3>
                   <p className="text-zinc-600 leading-relaxed font-medium mt-auto">
