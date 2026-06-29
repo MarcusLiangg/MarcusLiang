@@ -347,7 +347,8 @@ export default function Portfolio() {
 
                   <p className="text-zinc-500 mt-3 leading-relaxed border-t border-zinc-100 pt-4 pl-2">
                     <strong className="text-zinc-700">Specialization:</strong> Machine Learning.<br />
-                    <strong className="text-zinc-700">Relevant Coursework:</strong> BT4221 Advanced Analytics with Big Data Technologies, Machine Learning for Predictive Data Analytics.
+                    <strong className="text-zinc-700">Relevant Coursework:</strong> BT4221 Advanced Analytics with Big Data Technologies, BT4240 Machine Learning for Predictive Data
+Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structures and Algorithms.
                   </p>
                 </div>
               </motion.div>
