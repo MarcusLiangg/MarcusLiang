@@ -80,7 +80,7 @@ export default function Portfolio() {
             {/* 3D PC Setup (static page in public/) */}
             <li>
               <a
-                href="/pc-setup.html"
+                href="/3d_view"
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-full transition-all font-semibold"
               >
                 3D View
