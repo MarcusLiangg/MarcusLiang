@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio OS — 3D PC Setup</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #0b0d12;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  #scene-container { position: fixed; inset: 0; }
+
+  /* CSS3D layer sits above WebGL but lets events fall through to OrbitControls,
+     except on the IDE element itself. */
+  #css3d-layer { position: absolute; top: 0; left: 0; pointer-events: none; }
+  #css3d-layer * { pointer-events: none; }
+  #ide-root, #ide-root * { pointer-events: auto; }
+
+  /* ---------- IDE (port of components/Terminal.jsx) ---------- */
+  #ide-root {
+    width: 960px;
+    height: 600px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #09090b;
+    border: 1px solid #27272a;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.15);
+    color: #d4d4d8;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    user-select: text;
+  }
+  .ide-titlebar {
+    background: #18181b;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #27272a;
+    flex-shrink: 0;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.red { background: #ef4444; } .dot.yellow { background: #eab308; } .dot.green { background: #22c55e; }
+  .ide-titlebar span { margin-left: 16px; color: #a1a1aa; font-size: 12px; }
+
+  .ide-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+    cursor: text;
+  }
+  .ide-body::-webkit-scrollbar { width: 8px; }
+  .ide-body::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+
+  .banner {
+    position: relative;
+    border: 1px dashed rgba(59,130,246,.5);
+    border-radius: 6px;
+    padding: 20px;
+    margin: 16px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .banner-title {
+    position: absolute; top: -12px; left: 16px;
+    background: #09090b; padding: 0 8px;
+    color: #60a5fa; font-weight: 600;
+  }
+  .banner .left {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-right: 1px dashed rgba(59,130,246,.5); padding-right: 24px;
+  }
+  .banner .welcome { font-weight: 700; color: #f4f4f5; font-size: 15px; margin-bottom: 20px; }
+  .banner pre { color: #3b82f6; font-weight: 700; text-align: center; line-height: 1; font-size: 16px; margin: 0 0 20px; }
+  .banner .meta { color: #71717a; font-size: 12px; text-align: center; line-height: 1.6; }
+  .banner .right { display: flex; flex-direction: column; gap: 16px; font-size: 13px; }
+  .banner .section-head { color: #60a5fa; font-weight: 600; margin-bottom: 6px; }
+  .banner .activity { border-bottom: 1px dashed rgba(59,130,246,.5); padding-bottom: 14px; color: #d4d4d8; }
+  .banner .activity .date { color: #71717a; margin-right: 12px; }
+  .banner .hint { color: #52525b; font-size: 12px; margin-top: 8px; }
+  .banner .cmd { color: #f4f4f5; font-weight: 600; }
+  .banner .ai-hint { color: #71717a; font-size: 12px; font-style: italic; margin-top: 10px; }
+
+  .line { white-space: pre-wrap; margin: 4px 0; }
+  .line.error { color: #f87171; }
+  .prompt-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .prompt-row .ps1 { color: #4ade80; white-space: nowrap; }
+  #ide-input {
+    flex: 1; background: transparent; outline: none; border: none;
+    color: #f4f4f5; font: inherit; caret-color: #4ade80;
+  }
+
+  #hud {
+    position: fixed; left: 16px; bottom: 16px; z-index: 10;
+    color: #71717a; font-size: 12px; line-height: 1.7;
+    background: rgba(9,9,11,.6); border: 1px solid #27272a;
+    padding: 10px 14px; border-radius: 8px; pointer-events: none;
+  }
+  #hud b { color: #a1a1aa; }
+
+  #put-down-btn {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    z-index: 20; padding: 12px 24px; border-radius: 999px;
+    background: #18181b; color: #f4f4f5; border: 1px solid #3f3f46;
+    font: 600 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    cursor: pointer; opacity: 0; pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease, background .15s ease;
+  }
+  #put-down-btn.visible { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+  #put-down-btn:hover { background: #27272a; }
+
+  .side-card {
+    position: fixed; right: 24px; top: 50%;
+    transform: translateY(-50%) translateX(24px);
+    width: 340px; z-index: 20;
+    background: rgba(16,17,20,.92); backdrop-filter: blur(8px);
+    border: 1px solid #2c2f36; border-radius: 14px; padding: 22px;
+    color: #d4d4d8; opacity: 0; pointer-events: none;
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .side-card.visible { opacity: 1; pointer-events: auto; transform: translateY(-50%) translateX(0); }
+  #pc-date, #cc-kicker { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #60a5fa; font-weight: 700; }
+  .side-card h2 { margin: 8px 0 10px; font-size: 20px; color: #f4f4f5; }
+  .side-card p { margin: 0 0 18px; font-size: 13px; line-height: 1.65; color: #a1a1aa; }
+  .pc-actions { display: flex; gap: 10px; }
+  .pc-actions + .pc-actions { margin-top: 10px; }
+  #pc-view, .cc-link {
+    flex: 1; text-align: center; padding: 10px 14px; border-radius: 8px;
+    background: #2563eb; color: #fff; text-decoration: none;
+    font-weight: 600; font-size: 13px;
+  }
+  #pc-view:hover, .cc-link:hover { background: #3b82f6; }
+  #pc-close, #cc-close {
+    padding: 10px 14px; border-radius: 8px; background: transparent;
+    color: #a1a1aa; border: 1px solid #3f3f46; cursor: pointer;
+    font: inherit; font-size: 13px;
+  }
+  #pc-close:hover, #cc-close:hover { background: #27272a; color: #f4f4f5; }
+</style>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div id="scene-container"></div>
+
+<!-- The IDE DOM lives here; CSS3DRenderer moves #ide-root into its layer. -->
+<div id="ide-root">
+  <div class="ide-titlebar">
+    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+    <span>visitor@portfolio ~ bash</span>
+  </div>
+  <div class="ide-body" id="ide-body">
+    <div id="ide-history"></div>
+    <div class="prompt-row">
+      <span class="ps1">visitor@portfolio:~$</span>
+      <input id="ide-input" type="text" autocomplete="off" spellcheck="false" />
+    </div>
+  </div>
+</div>
+
+<div id="hud">
+  <b>Drag</b> empty space to orbit &nbsp;·&nbsp; <b>Scroll</b> to zoom<br/>
+  The on-screen IDE is fully interactive — click it and type <b>help</b>.<br/>
+  <b>Click the resume</b> on the desk to pick it up.<br/>
+  <b>Click a folder</b> in the project file box to inspect it.<br/>
+  <b>Click the business card</b> behind the monitor for contact info.
+</div>
+
+<button id="put-down-btn" type="button">&#10005;&nbsp; Put resume down</button>
+
+<aside id="project-card" class="side-card">
+  <div id="pc-date"></div>
+  <h2 id="pc-title"></h2>
+  <p id="pc-desc"></p>
+  <div class="pc-actions">
+    <a id="pc-view" href="#">View case study &#8594;</a>
+    <button id="pc-close" type="button">&#10005; Put back</button>
+  </div>
+</aside>
+
+<aside id="contact-card" class="side-card">
+  <div id="cc-kicker">Business Card</div>
+  <h2>Marcus Liang</h2>
+  <p>Business Analytics &middot; Data Science<br/>National University of Singapore</p>
+  <div class="pc-actions">
+    <a class="cc-link" href="mailto:marcusliang@u.nus.edu">&#9993;&nbsp; marcusliang@u.nus.edu</a>
+  </div>
+  <div class="pc-actions">
+    <a class="cc-link" href="https://www.linkedin.com/in/liangmarcus/" target="_blank" rel="noopener noreferrer">in&nbsp; linkedin.com/in/liangmarcus</a>
+    <button id="cc-close" type="button">&#10005; Put back</button>
+  </div>
+</aside>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
+
+/* ============================================================
+   Single source of truth for screen sizing:
+   the IDE element is IDE_W x IDE_H CSS pixels; PX converts
+   CSS pixels -> world units. Both the CSS3D screen and the
+   WebGL monitor bezel are derived from these, so the frame
+   matches the IDE bounds exactly.
+   ============================================================ */
+const IDE_W = 960, IDE_H = 600;
+const PX = 0.005;                       // world units per CSS pixel
+const SCREEN_W = IDE_W * PX;            // 4.8
+const SCREEN_H = IDE_H * PX;            // 3.0
+const BEZEL = 0.16;                     // frame thickness around the screen
+const PANEL_D = 0.14;                   // monitor panel depth
+const SCREEN_Y = 2.1;                   // screen center height above desk top
+const DESK_TOP_Y = 0.0;                 // desk surface at y = 0
+
+/* ---------------- Renderers ---------------- */
+const container = document.getElementById('scene-container');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+container.appendChild(renderer.domElement);
+
+const cssRenderer = new CSS3DRenderer();
+cssRenderer.setSize(window.innerWidth, window.innerHeight);
+cssRenderer.domElement.id = 'css3d-layer';
+container.appendChild(cssRenderer.domElement);
+
+/* ---------------- Scene / camera / controls ---------------- */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b0d12);
+scene.fog = new THREE.Fog(0x0b0d12, 18, 40);
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(3.4, 3.2, 6.2);
+
+// Optional debug override: ?cam=x,y,z
+const camParam = new URLSearchParams(location.search).get('cam');
+if (camParam) {
+  const [x, y, z] = camParam.split(',').map(Number);
+  if ([x, y, z].every(Number.isFinite)) camera.position.set(x, y, z);
+}
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.4, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 2.5;
+controls.maxDistance = 14;
+controls.maxPolarAngle = Math.PI * 0.52;   // don't go under the floor
+controls.update();
+
+/* ---------------- Lights ---------------- */
+scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+
+const key = new THREE.DirectionalLight(0xffffff, 2.0);
+key.position.set(5, 9, 6);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.left = -8; key.shadow.camera.right = 8;
+key.shadow.camera.top = 8;  key.shadow.camera.bottom = -8;
+scene.add(key);
+
+const rim = new THREE.DirectionalLight(0x7aa2ff, 0.5);
+rim.position.set(-6, 4, -5);
+scene.add(rim);
+
+/* ---------------- Materials ---------------- */
+const matBody  = new THREE.MeshStandardMaterial({ color: 0x1b1e24, roughness: 0.45, metalness: 0.6 });
+const matBezel = new THREE.MeshStandardMaterial({ color: 0x101216, roughness: 0.35, metalness: 0.55 });
+const matStand = new THREE.MeshStandardMaterial({ color: 0x23262d, roughness: 0.4,  metalness: 0.7 });
+const matDesk  = new THREE.MeshStandardMaterial({ color: 0x3d2f23, roughness: 0.75, metalness: 0.05 });
+const matKeys  = new THREE.MeshStandardMaterial({ color: 0x2a2d33, roughness: 0.55, metalness: 0.3 });
+const matKeyc  = new THREE.MeshStandardMaterial({ color: 0x3f434c, roughness: 0.6,  metalness: 0.2 });
+const matFloor = new THREE.MeshStandardMaterial({ color: 0x11141a, roughness: 0.95, metalness: 0 });
+
+/* ============================================================
+   MONITOR — panel body + bezel frame. The bezel's inner opening
+   is exactly SCREEN_W x SCREEN_H, and the CSS3D screen sits
+   coplanar with the bezel's front face, so they line up perfectly.
+   ============================================================ */
+const monitor = new THREE.Group();
+monitor.position.y = SCREEN_Y;
+scene.add(monitor);
+
+const outerW = SCREEN_W + BEZEL * 2;
+const outerH = SCREEN_H + BEZEL * 2;
+
+// Panel body (back shell) — front face at local z = 0
+const panel = new THREE.Mesh(new THREE.BoxGeometry(outerW, outerH, PANEL_D), matBody);
+panel.position.z = -PANEL_D / 2;
+panel.castShadow = true;
+monitor.add(panel);
+
+// Bezel frame: 4 bars whose inner edges touch the screen bounds exactly
+const bezelDepth = 0.02;
+const mkBar = (w, h, x, y) => {
+  const bar = new THREE.Mesh(new THREE.BoxGeometry(w, h, bezelDepth), matBezel);
+  bar.position.set(x, y, bezelDepth / 2 - 0.001);
+  monitor.add(bar);
+};
+mkBar(outerW, BEZEL, 0,  SCREEN_H / 2 + BEZEL / 2);   // top
+mkBar(outerW, BEZEL, 0, -SCREEN_H / 2 - BEZEL / 2);   // bottom
+mkBar(BEZEL, SCREEN_H, -SCREEN_W / 2 - BEZEL / 2, 0); // left
+mkBar(BEZEL, SCREEN_H,  SCREEN_W / 2 + BEZEL / 2, 0); // right
+
+// Opaque backing just behind the screen (CSS3D doesn't depth-test against WebGL,
+// this guarantees the screen area is never see-through)
+const backing = new THREE.Mesh(
+  new THREE.PlaneGeometry(SCREEN_W, SCREEN_H),
+  new THREE.MeshBasicMaterial({ color: 0x09090b })
+);
+backing.position.z = -0.005;
+monitor.add(backing);
+
+// Power LED on the bottom bezel
+const led = new THREE.Mesh(
+  new THREE.CircleGeometry(0.018, 16),
+  new THREE.MeshBasicMaterial({ color: 0x4ade80 })
+);
+led.position.set(outerW / 2 - 0.07, -SCREEN_H / 2 - BEZEL / 2, bezelDepth + 0.001);
+monitor.add(led);
+
+/* ---------------- Stand ---------------- */
+const standPole = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.11, SCREEN_Y - SCREEN_H / 2, 24), matStand);
+standPole.position.set(0, (SCREEN_Y - SCREEN_H / 2) / 2, -PANEL_D - 0.05);
+standPole.castShadow = true;
+scene.add(standPole);
+
+const standBase = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.95, 0.08, 40), matStand);
+standBase.position.set(0, 0.04, -PANEL_D - 0.05);
+standBase.castShadow = true;
+standBase.receiveShadow = true;
+scene.add(standBase);
+
+/* ---------------- Keyboard ---------------- */
+const keyboard = new THREE.Group();
+keyboard.position.set(0, 0, 1.55);
+keyboard.rotation.x = -0.06;
+scene.add(keyboard);
+
+const kbBase = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.09, 1.15), matKeys);
+kbBase.position.y = 0.045;
+kbBase.castShadow = true;
+kbBase.receiveShadow = true;
+keyboard.add(kbBase);
+
+// Key grid
+const keyGeo = new THREE.BoxGeometry(0.19, 0.05, 0.19);
+for (let r = 0; r < 5; r++) {
+  const cols = 14;
+  for (let c = 0; c < cols; c++) {
+    // simple spacebar row
+    if (r === 4 && c > 3 && c < 10) continue;
+    const k = new THREE.Mesh(keyGeo, matKeyc);
+    const w = (r === 4 && c === 3) ? 5.4 : 1; // spacebar stretch
+    k.scale.x = w;
+    k.position.set(
+      -((cols - 1) * 0.225) / 2 + c * 0.225 + (w > 1 ? 0.45 : 0),
+      0.115,
+      -0.42 + r * 0.225
+    );
+    k.castShadow = true;
+    keyboard.add(k);
+  }
+}
+
+/* ---------------- Desk & floor ---------------- */
+const desk = new THREE.Mesh(new THREE.BoxGeometry(11, 0.22, 5.2), matDesk);
+desk.position.y = -0.11;
+desk.receiveShadow = true;
+desk.castShadow = true;
+scene.add(desk);
+
+for (const [x, z] of [[-5.2, -2.3], [5.2, -2.3], [-5.2, 2.3], [5.2, 2.3]]) {
+  const leg = new THREE.Mesh(new THREE.BoxGeometry(0.18, 2.6, 0.18), matStand);
+  leg.position.set(x, -1.5, z);
+  scene.add(leg);
+}
+
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), matFloor);
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -2.82;
+floor.receiveShadow = true;
+scene.add(floor);
+
+/* ============================================================
+   RESUME PAPER — page 1 of Marcus_Liang_Resume.pdf is rendered
+   with pdf.js onto a canvas and used as the paper's texture, so
+   the prop always reflects the real PDF. Falls back to a plain
+   titled sheet if the PDF can't be fetched (e.g. opened as a
+   bare file without the Next.js server).
+   ============================================================ */
+const PAPER_W = 0.9, PAPER_H = 0.9 * Math.SQRT2; // A-series ratio
+const paper = new THREE.Group();
+paper.position.set(-2.6, 0, 1.15);
+paper.rotation.y = 0.35;
+scene.add(paper);
+
+const paperSheet = new THREE.Mesh(
+  new THREE.BoxGeometry(PAPER_W, 0.006, PAPER_H),
+  new THREE.MeshStandardMaterial({ color: 0xf5f5f2, roughness: 0.9 })
+);
+paperSheet.position.y = 0.003;
+paperSheet.castShadow = true;
+paperSheet.receiveShadow = true;
+paper.add(paperSheet);
+
+const paperCanvas = document.createElement('canvas');
+const paperTex = new THREE.CanvasTexture(paperCanvas);
+paperTex.colorSpace = THREE.SRGBColorSpace;
+paperTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+const paperFace = new THREE.Mesh(
+  new THREE.PlaneGeometry(PAPER_W, PAPER_H),
+  new THREE.MeshStandardMaterial({ map: paperTex, roughness: 0.85 })
+);
+paperFace.rotation.x = -Math.PI / 2;
+paperFace.position.y = 0.007;
+paper.add(paperFace);
+
+function drawPaperFallback() {
+  paperCanvas.width = 612; paperCanvas.height = 792;
+  const c = paperCanvas.getContext('2d');
+  c.fillStyle = '#f5f5f2'; c.fillRect(0, 0, 612, 792);
+  c.fillStyle = '#1f2937';
+  c.font = 'bold 44px Georgia, serif'; c.textAlign = 'center';
+  c.fillText('Marcus Liang', 306, 110);
+  c.font = '22px Georgia, serif'; c.fillStyle = '#4b5563';
+  c.fillText('Résumé', 306, 155);
+  c.strokeStyle = '#9ca3af'; c.lineWidth = 4;
+  for (let y = 220; y < 720; y += 42) {
+    c.beginPath(); c.moveTo(70, y); c.lineTo(542, y); c.stroke();
+  }
+  paperTex.needsUpdate = true;
+}
+drawPaperFallback(); // placeholder until the PDF arrives
+
+(async () => {
+  try {
+    const pdfjs = await import('https://unpkg.com/pdfjs-dist@4.2.67/build/pdf.min.mjs');
+    pdfjs.GlobalWorkerOptions.workerSrc =
+      'https://unpkg.com/pdfjs-dist@4.2.67/build/pdf.worker.min.mjs';
+    const doc = await pdfjs.getDocument('/Marcus_Liang_Resume.pdf').promise;
+    const page = await doc.getPage(1);
+    const viewport = page.getViewport({ scale: 2.5 });
+    paperCanvas.width = viewport.width;
+    paperCanvas.height = viewport.height;
+    await page.render({ canvasContext: paperCanvas.getContext('2d'), viewport }).promise;
+    // Canvas was resized, so swap in a fresh texture rather than updating
+    // the old one in place (its GPU copy still has the fallback dimensions).
+    const pdfTex = new THREE.CanvasTexture(paperCanvas);
+    pdfTex.colorSpace = THREE.SRGBColorSpace;
+    pdfTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    paperFace.material.map = pdfTex;
+    paperFace.material.needsUpdate = true;
+    paperTex.dispose();
+  } catch (err) {
+    console.warn('Resume PDF texture failed, keeping fallback sheet:', err);
+  }
+})();
+
+/* ---------------- Coffee mug ---------------- */
+const mug = new THREE.Group();
+mug.position.set(2.7, 0, 0.75);
+mug.rotation.y = -0.5;
+scene.add(mug);
+
+const matMug = new THREE.MeshStandardMaterial({ color: 0x274156, roughness: 0.25, metalness: 0.1 });
+const mugBody = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.14, 0.32, 32), matMug);
+mugBody.position.y = 0.16;
+mugBody.castShadow = true;
+mugBody.receiveShadow = true;
+mug.add(mugBody);
+
+// Coffee surface, just below the rim
+const coffee = new THREE.Mesh(
+  new THREE.CircleGeometry(0.145, 32),
+  new THREE.MeshStandardMaterial({ color: 0x2e1a0e, roughness: 0.15 })
+);
+coffee.rotation.x = -Math.PI / 2;
+coffee.position.y = 0.29;
+mug.add(coffee);
+
+// Handle
+const handle = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.028, 12, 24, Math.PI), matMug);
+handle.position.set(0.18, 0.16, 0);
+handle.rotation.z = -Math.PI / 2;
+handle.castShadow = true;
+mug.add(handle);
+
+// Coaster
+const coaster = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.24, 0.24, 0.015, 32),
+  new THREE.MeshStandardMaterial({ color: 0x6b4f35, roughness: 0.8 })
+);
+coaster.position.y = 0.0075;
+coaster.receiveShadow = true;
+mug.add(coaster);
+
+/* ============================================================
+   PROJECT FILE BOX — a cardboard archive box on the desk with
+   one manila folder per project. Keep PROJECTS in sync with
+   data/projects.js. Click a folder to read its summary and jump
+   to the case-study page.
+   ============================================================ */
+const PROJECTS = [
+  { id: 'agentic-healthcare', title: 'Agentic Healthcare Analytics', date: 'Jan 2026 - Apr 2026',
+    shortDesc: 'A multi-agent workflow that translates natural-language healthcare questions into auditable structured-data analysis using LangGraph and DuckDB.' },
+  { id: 'judicial-analytics-legal-nlp', title: 'Judicial Analytics & Legal NLP', date: 'Jan 2026 - Apr 2026',
+    shortDesc: 'A comprehensive NLP pipeline designed to extract, process, and analyze complex legal documents while strictly controlling for data leakage.' },
+  { id: 'charity-dao', title: 'Charity DAO: Decentralized Giving', date: 'Aug 2025 - Dec 2025',
+    shortDesc: 'A decentralized charity platform utilizing quadratic voting and milestone-based disbursements to ensure transparent fund allocation.' },
+  { id: 'fair-tracker', title: 'The Fair Tracker', date: 'Jan 2025 - May 2025',
+    shortDesc: 'A centralized platform empowering consumers to compare grocery prices across major Singaporean supermarket chains to combat food inflation.' },
+  { id: 'p2p-loan-default', title: 'P2P Loan Default Prediction', date: 'Jan 2025 - May 2025',
+    shortDesc: 'Built an end-to-end Big Data ML pipeline using PySpark to process 1.7GB of loan records, achieving an 82% recall rate in predicting credit defaults.' },
+  { id: 'community-mart', title: 'Community Mart App', date: 'Jan 2025',
+    shortDesc: 'A digital mini-mart empowering residents to purchase goods using a voucher system, featuring an AI chatbot and live auctions.' },
+  { id: 'beijing-house-market', title: 'Beijing House Market Analysis', date: 'Mar 2024 - Apr 2024',
+    shortDesc: 'Analyzed Beijing housing data (2011-2017) to provide actionable business insights regarding market risks and investment viability.' },
+];
+
+function makeCanvasTexture(w, h, draw) {
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  draw(c.getContext('2d'), w, h);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return tex;
+}
+
+// Manila folder with the project title on a label card
+function makeFileTexture(title) {
+  return makeCanvasTexture(512, 288, (g) => {
+    g.fillStyle = '#dcc488'; g.fillRect(0, 0, 512, 288);
+    g.fillStyle = '#cbb273'; g.fillRect(0, 0, 512, 60);          // tab band
+    g.fillStyle = 'rgba(0,0,0,0.08)'; g.fillRect(0, 60, 512, 5);
+    g.fillStyle = '#f7f3e7'; g.fillRect(28, 96, 456, 124);       // label card
+    g.strokeStyle = '#b3a06b'; g.lineWidth = 2; g.strokeRect(28, 96, 456, 124);
+    g.fillStyle = '#33302a'; g.textAlign = 'center';
+    g.font = 'bold 30px Georgia, serif';
+    const words = title.split(' ');
+    const lines = []; let line = '';
+    for (const w of words) {
+      const test = line ? line + ' ' + w : w;
+      if (line && g.measureText(test).width > 420) { lines.push(line); line = w; }
+      else line = test;
+    }
+    lines.push(line);
+    const startY = lines.length > 1 ? 148 : 168;
+    lines.slice(0, 2).forEach((l, i) => g.fillText(l, 256, startY + i * 38));
+  });
+}
+
+// "PROJECTS" stencil on the box front
+function makeBoxLabelTexture() {
+  return makeCanvasTexture(512, 256, (g) => {
+    g.fillStyle = '#9a7b4f'; g.fillRect(0, 0, 512, 256);
+    g.strokeStyle = '#6f5732'; g.lineWidth = 6; g.strokeRect(30, 40, 452, 176);
+    g.fillStyle = '#4a3a20'; g.textAlign = 'center';
+    g.font = 'bold 72px Georgia, serif';
+    g.fillText('PROJECTS', 256, 140);
+    g.font = 'italic 26px Georgia, serif';
+    g.fillText('— case files —', 256, 188);
+  });
+}
+
+const fileBox = new THREE.Group();
+fileBox.position.set(4.25, 0, -1.35);
+fileBox.rotation.y = -0.35;
+scene.add(fileBox);
+
+const BOX_W = 1.7, BOX_H = 0.85, BOX_D = 2.1, BOX_T = 0.05;
+const matCardboard = new THREE.MeshStandardMaterial({ color: 0x9a7b4f, roughness: 0.85 });
+const matCardboardIn = new THREE.MeshStandardMaterial({ color: 0x7d6238, roughness: 0.9 });
+const matBoxLabel = new THREE.MeshStandardMaterial({ map: makeBoxLabelTexture(), roughness: 0.85 });
+
+const mkPanel = (geo, x, y, z, mats) => {
+  const m = new THREE.Mesh(geo, mats || matCardboard);
+  m.position.set(x, y, z);
+  m.castShadow = true; m.receiveShadow = true;
+  fileBox.add(m);
+};
+mkPanel(new THREE.BoxGeometry(BOX_W, BOX_T, BOX_D), 0, BOX_T / 2, 0);
+// Front panel (+z): label texture on the outer face, plain cardboard inside
+mkPanel(new THREE.BoxGeometry(BOX_W, BOX_H, BOX_T), 0, BOX_H / 2, BOX_D / 2 - BOX_T / 2,
+  [matCardboard, matCardboard, matCardboard, matCardboardIn, matBoxLabel, matCardboardIn]);
+mkPanel(new THREE.BoxGeometry(BOX_W, BOX_H, BOX_T), 0, BOX_H / 2, -BOX_D / 2 + BOX_T / 2,
+  [matCardboard, matCardboard, matCardboard, matCardboardIn, matCardboard, matCardboardIn]);
+mkPanel(new THREE.BoxGeometry(BOX_T, BOX_H, BOX_D), BOX_W / 2 - BOX_T / 2, BOX_H / 2, 0,
+  [matCardboard, matCardboardIn, matCardboard, matCardboardIn, matCardboard, matCardboard]);
+mkPanel(new THREE.BoxGeometry(BOX_T, BOX_H, BOX_D), -BOX_W / 2 + BOX_T / 2, BOX_H / 2, 0,
+  [matCardboardIn, matCardboard, matCardboard, matCardboardIn, matCardboard, matCardboard]);
+
+const files = [];
+const FILE_W = 1.44, FILE_H = 0.7, FILE_T = 0.035;
+PROJECTS.forEach((p, i) => {
+  const f = new THREE.Mesh(
+    new THREE.BoxGeometry(FILE_W, FILE_H, FILE_T),
+    new THREE.MeshStandardMaterial({ map: makeFileTexture(p.title), roughness: 0.8 })
+  );
+  // PROJECTS is newest-first; index 0 sits at the front (+z) of the box
+  f.position.set(0, BOX_T + FILE_H / 2 + 0.18, 0.72 - i * 0.24);
+  f.rotation.x = (i % 2 === 0 ? -1 : 1) * 0.045;
+  f.castShadow = true;
+  f.userData.project = p;
+  f.userData.homePos = f.position.clone();
+  f.userData.homeQuat = f.quaternion.clone();
+  fileBox.add(f);
+  files.push(f);
+});
+// World-space home pose of each folder, used when returning it to the box
+fileBox.updateMatrixWorld(true);
+for (const f of files) {
+  f.userData.homeWorldPos = f.getWorldPosition(new THREE.Vector3());
+  f.userData.homeWorldQuat = f.getWorldQuaternion(new THREE.Quaternion());
+}
+
+/* ---------------- Business card (left back of the desk) ---------------- */
+const bizCardTex = makeCanvasTexture(1024, 585, (g, w, h) => {
+  g.fillStyle = '#f8f7f4'; g.fillRect(0, 0, w, h);
+  g.fillStyle = '#2563eb'; g.fillRect(0, 0, w, 14);                 // top accent strip
+  g.fillStyle = '#111827'; g.textAlign = 'left';
+  g.font = 'bold 74px Georgia, serif';
+  g.fillText('Marcus Liang', 70, 150);
+  g.font = '32px Georgia, serif'; g.fillStyle = '#2563eb';
+  g.fillText('Business Analytics · Data Science', 70, 210);
+  g.strokeStyle = '#d4d4d8'; g.lineWidth = 3;
+  g.beginPath(); g.moveTo(70, 260); g.lineTo(w - 70, 260); g.stroke();
+  g.font = '34px Georgia, serif'; g.fillStyle = '#374151';
+  g.fillText('✉  marcusliang@u.nus.edu', 70, 370);
+  g.fillText('in  linkedin.com/in/liangmarcus', 70, 450);
+  g.font = 'italic 26px Georgia, serif'; g.fillStyle = '#9ca3af';
+  g.fillText('National University of Singapore', 70, 530);
+});
+
+const matCardSide = new THREE.MeshStandardMaterial({ color: 0xf8f7f4, roughness: 0.85 });
+const matCardFace = new THREE.MeshStandardMaterial({ map: bizCardTex, roughness: 0.85 });
+const bizCard = new THREE.Mesh(
+  new THREE.BoxGeometry(0.63, 0.008, 0.36), // standard 3.5" x 2" card ratio
+  [matCardSide, matCardSide, matCardFace, matCardSide, matCardSide, matCardSide]
+);
+bizCard.position.set(-4.15, 0.004, -0.75);
+bizCard.rotation.y = 0.28;
+bizCard.castShadow = true;
+bizCard.receiveShadow = true;
+scene.add(bizCard);
+const cardHomePos = bizCard.position.clone();
+const cardHomeQuat = bizCard.quaternion.clone();
+
+/* ============================================================
+   CSS3D SCREEN — the IDE element itself, scaled by PX so its
+   CSS-pixel bounds map 1:1 onto the bezel opening.
+   ============================================================ */
+const ideEl = document.getElementById('ide-root');
+const screenObj = new CSS3DObject(ideEl);
+screenObj.scale.set(PX, PX, PX);
+// Coplanar with the bezel front face (z = 0 in monitor space), nudged out a hair
+screenObj.position.set(0, 0, bezelDepth + 0.002);
+monitor.add(screenObj);
+
+/* ============================================================
+   RESUME INSPECT — click the paper to pick it up in front of
+   the camera (game-style). The sheet tweens to a pose derived
+   from the camera each frame, faces the user with the text
+   upright, and the "put down" button returns it to the desk.
+   ============================================================ */
+const putDownBtn = document.getElementById('put-down-btn');
+const raycaster = new THREE.Raycaster();
+const pointerNdc = new THREE.Vector2();
+const paperPickMeshes = [paperSheet, paperFace];
+
+let paperState = 'idle'; // idle | lifting | held | returning
+const paperHomePos = paper.position.clone();
+const paperHomeQuat = paper.quaternion.clone();
+const INSPECT_DIST = 1.6;
+
+const _fwd = new THREE.Vector3();
+const _camUp = new THREE.Vector3();
+const _posePos = new THREE.Vector3();
+const _bx = new THREE.Vector3(), _by = new THREE.Vector3(), _bz = new THREE.Vector3();
+const _poseMat = new THREE.Matrix4();
+const _poseQuat = new THREE.Quaternion();
+
+// Pose: paper floats in front of the camera, face (+Y local) toward the
+// viewer, text top (-Z local) aligned with the camera's up.
+function computeInspectPose() {
+  camera.getWorldDirection(_fwd);
+  _posePos.copy(camera.position).addScaledVector(_fwd, INSPECT_DIST);
+  _by.copy(_fwd).negate();
+  _camUp.set(0, 1, 0).applyQuaternion(camera.quaternion);
+  _bz.copy(_camUp).negate();
+  _bx.crossVectors(_by, _bz).normalize();
+  _bz.crossVectors(_bx, _by).normalize();
+  _poseMat.makeBasis(_bx, _by, _bz);
+  _poseQuat.setFromRotationMatrix(_poseMat);
+}
+
+function updatePaperInspect() {
+  if (paperState === 'lifting' || paperState === 'held') {
+    computeInspectPose();
+    paper.position.lerp(_posePos, 0.14);
+    paper.quaternion.slerp(_poseQuat, 0.14);
+    if (paperState === 'lifting' && paper.position.distanceTo(_posePos) < 0.03) {
+      paperState = 'held';
+    }
+  } else if (paperState === 'returning') {
+    paper.position.lerp(paperHomePos, 0.18);
+    paper.quaternion.slerp(paperHomeQuat, 0.18);
+    if (paper.position.distanceTo(paperHomePos) < 0.01) {
+      paper.position.copy(paperHomePos);
+      paper.quaternion.copy(paperHomeQuat);
+      paperState = 'idle';
+    }
+  }
+}
+
+function pickUpPaper() {
+  if (paperState !== 'idle' || fileState !== 'idle' || cardState !== 'idle') return;
+  paperState = 'lifting';
+  putDownBtn.classList.add('visible');
+}
+
+putDownBtn.addEventListener('click', () => {
+  paperState = 'returning';
+  putDownBtn.classList.remove('visible');
+});
+
+/* ============================================================
+   PROJECT FOLDER INSPECT — same game-style pickup as the resume.
+   While a folder is held, a summary card slides in with a
+   "View case study" link to /projects/<id>.
+   ============================================================ */
+const projectCard = document.getElementById('project-card');
+const pcDate = document.getElementById('pc-date');
+const pcTitle = document.getElementById('pc-title');
+const pcDesc = document.getElementById('pc-desc');
+const pcView = document.getElementById('pc-view');
+
+let fileState = 'idle'; // idle | lifting | held | returning
+let activeFile = null;
+let hoveredFile = null;
+
+// Pose: folder in front of the camera, face (+Z local) toward the viewer,
+// top edge (+Y local) aligned with the camera's up.
+function computeFileInspectPose() {
+  camera.getWorldDirection(_fwd);
+  _posePos.copy(camera.position).addScaledVector(_fwd, 1.5);
+  _bz.copy(_fwd).negate();
+  _camUp.set(0, 1, 0).applyQuaternion(camera.quaternion);
+  _by.copy(_camUp);
+  _bx.crossVectors(_by, _bz).normalize();
+  _by.crossVectors(_bz, _bx).normalize();
+  _poseMat.makeBasis(_bx, _by, _bz);
+  _poseQuat.setFromRotationMatrix(_poseMat);
+}
+
+function updateFileInspect() {
+  // Folders resting in the box lift slightly when hovered
+  for (const f of files) {
+    if (f.parent !== fileBox) continue;
+    const targetY = f.userData.homePos.y + (f === hoveredFile ? 0.1 : 0);
+    f.position.y += (targetY - f.position.y) * 0.2;
+  }
+  if (!activeFile) return;
+  if (fileState === 'lifting' || fileState === 'held') {
+    computeFileInspectPose();
+    activeFile.position.lerp(_posePos, 0.14);
+    activeFile.quaternion.slerp(_poseQuat, 0.14);
+    if (fileState === 'lifting' && activeFile.position.distanceTo(_posePos) < 0.03) {
+      fileState = 'held';
+    }
+  } else if (fileState === 'returning') {
+    activeFile.position.lerp(activeFile.userData.homeWorldPos, 0.18);
+    activeFile.quaternion.slerp(activeFile.userData.homeWorldQuat, 0.18);
+    if (activeFile.position.distanceTo(activeFile.userData.homeWorldPos) < 0.01) {
+      fileBox.attach(activeFile);
+      activeFile.position.copy(activeFile.userData.homePos);
+      activeFile.quaternion.copy(activeFile.userData.homeQuat);
+      activeFile = null;
+      fileState = 'idle';
+    }
+  }
+}
+
+function pickUpFile(f) {
+  if (paperState !== 'idle' || fileState !== 'idle' || cardState !== 'idle') return;
+  activeFile = f;
+  fileState = 'lifting';
+  hoveredFile = null;
+  scene.attach(f); // keep world transform while reparenting to the scene
+  const p = f.userData.project;
+  pcDate.textContent = p.date;
+  pcTitle.textContent = p.title;
+  pcDesc.textContent = p.shortDesc;
+  pcView.href = '/projects/' + p.id;
+  projectCard.classList.add('visible');
+}
+
+document.getElementById('pc-close').addEventListener('click', () => {
+  projectCard.classList.remove('visible');
+  fileState = 'returning';
+});
+
+/* -------- Business card inspect -------- */
+const contactCard = document.getElementById('contact-card');
+let cardState = 'idle'; // idle | lifting | held | returning
+
+// Pose: card face (+Y local) toward the viewer, name top (-Z local) to camera up
+function computeCardInspectPose() {
+  camera.getWorldDirection(_fwd);
+  _posePos.copy(camera.position).addScaledVector(_fwd, 1.1);
+  _by.copy(_fwd).negate();
+  _camUp.set(0, 1, 0).applyQuaternion(camera.quaternion);
+  _bz.copy(_camUp).negate();
+  _bx.crossVectors(_by, _bz).normalize();
+  _bz.crossVectors(_bx, _by).normalize();
+  _poseMat.makeBasis(_bx, _by, _bz);
+  _poseQuat.setFromRotationMatrix(_poseMat);
+}
+
+function updateCardInspect() {
+  if (cardState === 'lifting' || cardState === 'held') {
+    computeCardInspectPose();
+    bizCard.position.lerp(_posePos, 0.16);
+    bizCard.quaternion.slerp(_poseQuat, 0.16);
+    if (cardState === 'lifting' && bizCard.position.distanceTo(_posePos) < 0.02) {
+      cardState = 'held';
+    }
+  } else if (cardState === 'returning') {
+    bizCard.position.lerp(cardHomePos, 0.2);
+    bizCard.quaternion.slerp(cardHomeQuat, 0.2);
+    if (bizCard.position.distanceTo(cardHomePos) < 0.005) {
+      bizCard.position.copy(cardHomePos);
+      bizCard.quaternion.copy(cardHomeQuat);
+      cardState = 'idle';
+    }
+  }
+}
+
+function pickUpCard() {
+  if (paperState !== 'idle' || fileState !== 'idle' || cardState !== 'idle') return;
+  cardState = 'lifting';
+  contactCard.classList.add('visible');
+}
+
+document.getElementById('cc-close').addEventListener('click', () => {
+  contactCard.classList.remove('visible');
+  cardState = 'returning';
+});
+
+/* -------- Shared picking (resume sheet + project folders + business card) -------- */
+const isInspecting = () => paperState !== 'idle' || fileState !== 'idle' || cardState !== 'idle';
+
+function setNdc(e) {
+  pointerNdc.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+  raycaster.setFromCamera(pointerNdc, camera);
+}
+
+// Click = pointerup near where the pointer went down (so orbiting the
+// camera never counts as a click).
+let downX = 0, downY = 0;
+renderer.domElement.addEventListener('pointerdown', (e) => {
+  downX = e.clientX; downY = e.clientY;
+});
+renderer.domElement.addEventListener('pointerup', (e) => {
+  if (isInspecting()) return;
+  if (Math.hypot(e.clientX - downX, e.clientY - downY) > 5) return;
+  setNdc(e);
+  if (raycaster.intersectObjects(paperPickMeshes, false).length > 0) { pickUpPaper(); return; }
+  if (raycaster.intersectObject(bizCard, false).length > 0) { pickUpCard(); return; }
+  const hit = raycaster.intersectObjects(files, false)[0];
+  if (hit) pickUpFile(hit.object);
+});
+
+// Pointer cursor + folder hover-lift
+renderer.domElement.addEventListener('pointermove', (e) => {
+  if (isInspecting()) { renderer.domElement.style.cursor = ''; hoveredFile = null; return; }
+  setNdc(e);
+  const overPaper = raycaster.intersectObjects(paperPickMeshes, false).length > 0;
+  const overCard = raycaster.intersectObject(bizCard, false).length > 0;
+  const fileHit = raycaster.intersectObjects(files, false)[0];
+  hoveredFile = fileHit ? fileHit.object : null;
+  renderer.domElement.style.cursor = (overPaper || overCard || fileHit) ? 'pointer' : '';
+});
+
+// Debug/screenshot hooks: ?inspect=1 (resume), ?inspect=file (first folder), ?inspect=card
+const inspectParam = new URLSearchParams(location.search).get('inspect');
+if (inspectParam === '1') pickUpPaper();
+if (inspectParam === 'file') pickUpFile(files[0]);
+if (inspectParam === 'card') pickUpCard();
+
+/* ---------------- Resize / render loop ---------------- */
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  cssRenderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// CSS3D content always draws on top of WebGL (no depth testing), so the IDE
+// would ghost through the monitor when orbiting behind it, and through the
+// resume sheet while it is being inspected. Hide the DOM screen in both cases.
+const _monitorNormal = new THREE.Vector3();
+const _monitorPos = new THREE.Vector3();
+const _toCamera = new THREE.Vector3();
+
+(function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  updatePaperInspect();
+  updateFileInspect();
+  updateCardInspect();
+
+  monitor.getWorldDirection(_monitorNormal);          // screen faces +z
+  monitor.getWorldPosition(_monitorPos);
+  _toCamera.subVectors(camera.position, _monitorPos);
+  const showScreen = _monitorNormal.dot(_toCamera) > 0
+    && paperState === 'idle' && fileState === 'idle' && cardState === 'idle';
+  const nextVisibility = showScreen ? 'visible' : 'hidden';
+  if (ideEl.style.visibility !== nextVisibility) {
+    ideEl.style.visibility = nextVisibility;
+  }
+
+  renderer.render(scene, camera);
+  cssRenderer.render(scene, camera);
+})();
+
+/* ============================================================
+   IDE LOGIC (vanilla port of components/Terminal.jsx)
+   ============================================================ */
+const historyEl = document.getElementById('ide-history');
+const inputEl = document.getElementById('ide-input');
+const bodyEl = document.getElementById('ide-body');
+
+const BANNER_HTML = `
+<div class="banner">
+  <div class="banner-title">Portfolio OS v2.0.0</div>
+  <div class="left">
+    <div class="welcome">Welcome to my Personal Site!</div>
+    <pre>███▄ ▄███ ██
+█████████ ██
+██ ▀█▀ ██ ██
+██     ██ ██
+   ██     ██ █████</pre>
+    <div class="meta">Next.js 14.0 • Max 20x<br/>~/users/marcus/portfolio</div>
+  </div>
+  <div class="right">
+    <div class="activity">
+      <div class="section-head">Recent activity</div>
+      <div><span class="date">11 May</span>Started a new Intern at PhillipCapital</div>
+      <div class="hint">...→ <b>"experience"</b> for more</div>
+    </div>
+    <div>
+      <div class="section-head">System Controls</div>
+      <div><span class="cmd">"resume"</span> to trigger PDF download</div>
+      <div><span class="cmd">"clear"</span> to reset terminal history</div>
+      <div class="ai-hint">↳ Or just ask the AI: "What did Marcus do at Shopee?"</div>
+    </div>
+  </div>
+</div>`;
+
+function addLine(text, cls = '') {
+  const div = document.createElement('div');
+  div.className = 'line ' + cls;
+  div.textContent = text;
+  historyEl.appendChild(div);
+}
+
+function addBanner() {
+  const tpl = document.createElement('template');
+  tpl.innerHTML = BANNER_HTML.trim();
+  historyEl.appendChild(tpl.content.firstChild);
+}
+
+function scrollBottom() {
+  bodyEl.scrollTop = bodyEl.scrollHeight;
+}
+
+function reset() {
+  historyEl.innerHTML = '';
+  addBanner();
+  addLine('Portfolio OS initialized. Ask the AI any question about my background.');
+  scrollBottom();
+}
+reset();
+
+bodyEl.addEventListener('click', () => inputEl.focus());
+
+inputEl.addEventListener('keydown', async (e) => {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  const cmd = inputEl.value.trim();
+  if (!cmd) return;
+
+  if (cmd.toLowerCase() === 'clear') {
+    historyEl.innerHTML = '';
+    addBanner();
+    inputEl.value = '';
+    scrollBottom();
+    return;
+  }
+
+  addLine(`visitor@portfolio:~$ ${cmd}`);
+  inputEl.value = '';
+
+  if (cmd.toLowerCase() === 'resume') {
+    const link = document.createElement('a');
+    link.href = '/Marcus_Liang_Resume.pdf';
+    link.download = 'Marcus_Liang_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    addLine('Downloading resume...');
+    scrollBottom();
+    return;
+  }
+
+  if (cmd.toLowerCase() === 'help') {
+    addLine('Commands: help, clear, resume — anything else is sent to the AI backend.');
+    scrollBottom();
+    return;
+  }
+
+  addLine('processing AI response...');
+  scrollBottom();
+  try {
+    const res = await fetch('/api/terminal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ command: cmd }),
+    });
+    const data = await res.json();
+    historyEl.lastChild.textContent = data.text;
+  } catch {
+    historyEl.lastChild.textContent =
+      'Error: Cannot reach AI server. (It is only available when this page is served by the Next.js site.)';
+    historyEl.lastChild.classList.add('error');
+  }
+  scrollBottom();
+});
+</script>
+</body>
+</html>

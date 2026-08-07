@@ -8,48 +8,36 @@ import {
 
 export default function JudicialNLPProject() {
   return (
-    <div className="bg-zinc-50 min-h-screen text-zinc-900 font-sans selection:bg-blue-500/30 pb-24">
-      
+    <div className="bg-zinc-50 min-h-screen text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white pb-24">
+
       {/* Custom Minimal Header */}
-      <header className="bg-zinc-950 text-zinc-50 py-4 px-6 sticky top-0 z-50">
+      <header className="bg-zinc-50/80 backdrop-blur-md border-b border-zinc-200 py-4 px-6 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/#projects" className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-400 hover:text-white transition-colors">
+          <Link href="/#projects" className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-500 hover:text-blue-600 transition-colors">
             <ArrowLeft size={16} />
             Back to Portfolio
           </Link>
-          <div className="text-sm font-mono text-zinc-500">NLP / DATA SCIENCE</div>
+          <div className="text-sm font-mono text-zinc-400">NLP / DATA SCIENCE</div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <div className="bg-zinc-950 text-white pt-12 pb-24 px-6 rounded-b-[3rem] shadow-xl">
+      <div className="bg-white border-b border-zinc-200 pt-12 pb-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 text-xs font-bold uppercase tracking-widest mb-6">
             <Scale size={14} /> Legal Analytics
           </div>
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6">
             Judicial Analytics & Legal NLP
           </h1>
-          <p className="text-xl text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="text-xl text-zinc-600 max-w-2xl leading-relaxed">
             A comprehensive Natural Language Processing pipeline designed to extract, process, and analyze complex legal documents and judicial rulings while strictly controlling for data leakage.
           </p>
         </div>
       </div>
 
-      <main className="max-w-4xl mx-auto px-6 -mt-12">
+      <main className="max-w-4xl mx-auto px-6 pt-12">
         
-        {/* Project Image Cover */}
-        <div className="w-full relative aspect-[21/9] h-48 md:h-64 rounded-3xl overflow-hidden shadow-sm mb-12 bg-zinc-200">
-          <Image 
-            src="/projects/legal-nlp.png" 
-            alt="Data visualization of Legal NLP analysis architecture"
-            fill
-            className="object-cover"
-            priority 
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
-          />
-        </div>
-
         {/* --- THE STAR METHODOLOGY GRID --- */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-6 px-2 text-zinc-900">Project Breakdown (STAR)</h2>
@@ -84,7 +72,7 @@ export default function JudicialNLPProject() {
             {/* Action */}
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
                   <Activity size={20} />
                 </div>
                 <h3 className="text-xl font-bold text-zinc-900">Action</h3>
@@ -324,12 +312,12 @@ export default function JudicialNLPProject() {
         <div className="bg-white border border-zinc-200 rounded-3xl p-8 md:p-12 shadow-sm mb-8">
             <h2 className="text-xl font-bold mb-6 text-zinc-900">Technologies Stack</h2>
             <div className="flex flex-wrap gap-3">
-              <span className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold">Python</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">PyTorch</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">XGBoost</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">HuggingFace Transformers (LegalBERT)</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">Pandas</span>
-              <span className="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">NLTK / SpaCy</span>
+              <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">Python</span>
+              <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">PyTorch</span>
+              <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">XGBoost</span>
+              <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">HuggingFace Transformers (LegalBERT)</span>
+              <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">Pandas</span>
+              <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">NLTK / SpaCy</span>
             </div>
         </div>
 

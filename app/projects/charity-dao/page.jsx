@@ -1,53 +1,40 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { 
+import {
   ArrowLeft, Blocks, ShieldCheck, Scale, Award, Database, 
   FileDigit, Wallet, Briefcase, Target, Activity, Trophy 
 } from 'lucide-react';
 
 export default function CharityDaoProject() {
   return (
-    <div className="bg-zinc-50 min-h-screen text-zinc-900 font-sans selection:bg-purple-500/30 pb-24">
-      
+    <div className="bg-zinc-50 min-h-screen text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white pb-24">
+
       {/* Custom Minimal Header */}
-      <header className="bg-zinc-950 text-zinc-50 py-4 px-6 sticky top-0 z-50">
+      <header className="bg-zinc-50/80 backdrop-blur-md border-b border-zinc-200 py-4 px-6 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/#projects" className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-400 hover:text-white transition-colors">
+          <Link href="/#projects" className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-500 hover:text-blue-600 transition-colors">
             <ArrowLeft size={16} />
             Back to Portfolio
           </Link>
-          <div className="text-sm font-mono text-zinc-500">WEB3 / SMART CONTRACTS</div>
+          <div className="text-sm font-mono text-zinc-400">WEB3 / SMART CONTRACTS</div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <div className="bg-zinc-950 text-white pt-12 pb-24 px-6 rounded-b-[3rem] shadow-xl">
+      <div className="bg-white border-b border-zinc-200 pt-12 pb-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-widest mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 text-xs font-bold uppercase tracking-widest mb-6">
             <Blocks size={14} /> Decentralized Charity
           </div>
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6">
             Charity DAO
           </h1>
-          <p className="text-xl text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="text-xl text-zinc-600 max-w-2xl leading-relaxed">
             Restoring trust in the charity sector through immutable blockchain records, quadratic voting, and milestone-based funding.
           </p>
         </div>
       </div>
 
-      <main className="max-w-4xl mx-auto px-6 -mt-12">
-        
-        {/* Project Image Cover (UPDATED DIMENSIONS) */}
-        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-12 bg-zinc-100 border border-zinc-200/50 shadow-sm">
-          <Image 
-            src="/projects/daov2.png" 
-            alt="Charity DAO Interface and Smart Contract Architecture"
-            fill
-            className="object-contain p-4"
-            priority 
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        </div>
+      <main className="max-w-4xl mx-auto px-6 pt-12">
 
         {/* --- THE STAR METHODOLOGY GRID --- */}
         <div className="mb-12">
@@ -83,7 +70,7 @@ export default function CharityDaoProject() {
             {/* Action */}
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-200">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
                   <Activity size={20} />
                 </div>
                 <h3 className="text-xl font-bold text-zinc-900">Action</h3>
@@ -113,8 +100,8 @@ export default function CharityDaoProject() {
         <h2 className="text-2xl font-bold mb-6 px-2">Tokenomics & Governance</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Quadratic Voting */}
-          <div className="bg-purple-50 p-8 rounded-3xl shadow-sm border border-purple-100">
-            <div className="w-14 h-14 bg-white text-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+          <div className="bg-blue-50 p-8 rounded-3xl shadow-sm border border-blue-100">
+            <div className="w-14 h-14 bg-white text-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
               <Scale size={28} />
             </div>
             <h3 className="text-2xl font-bold mb-3 text-zinc-900">Quadratic Voting</h3>
@@ -124,8 +111,8 @@ export default function CharityDaoProject() {
           </div>
           
           {/* Reputation System */}
-          <div className="bg-purple-50 p-8 rounded-3xl shadow-sm border border-purple-100">
-            <div className="w-14 h-14 bg-white text-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+          <div className="bg-blue-50 p-8 rounded-3xl shadow-sm border border-blue-100">
+            <div className="w-14 h-14 bg-white text-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
               <Award size={28} />
             </div>
             <h3 className="text-2xl font-bold mb-3 text-zinc-900">Reputation System</h3>
@@ -136,29 +123,29 @@ export default function CharityDaoProject() {
         </div>
 
         {/* Smart Contract Architecture */}
-        <div className="bg-zinc-900 rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-800 mb-12 text-zinc-100">
-          <div className="flex items-center gap-3 mb-8 border-b border-zinc-800 pb-4">
-            <ShieldCheck className="text-purple-400" size={28} />
-            <h2 className="text-2xl font-bold">Smart Contract Modules</h2>
+        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 mb-12">
+          <div className="flex items-center gap-3 mb-8 border-b border-zinc-200 pb-4">
+            <ShieldCheck className="text-blue-600" size={28} />
+            <h2 className="text-2xl font-bold text-zinc-900">Smart Contract Modules</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700/50">
-              <Wallet className="text-zinc-400 mb-4" size={24} />
-              <h3 className="font-bold text-zinc-100 mb-2 text-lg">Treasury</h3>
-              <p className="text-sm text-zinc-400">Securely manages ETH holdings, mints GOV tokens upon donation, and executes conditional tranches.</p>
+            <div className="bg-zinc-50 p-6 rounded-2xl border border-zinc-200">
+              <Wallet className="text-blue-600 mb-4" size={24} />
+              <h3 className="font-bold text-zinc-900 mb-2 text-lg">Treasury</h3>
+              <p className="text-sm text-zinc-600">Securely manages ETH holdings, mints GOV tokens upon donation, and executes conditional tranches.</p>
             </div>
             
-            <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700/50">
-              <Blocks className="text-zinc-400 mb-4" size={24} />
-              <h3 className="font-bold text-zinc-100 mb-2 text-lg">VotingManager</h3>
-              <p className="text-sm text-zinc-400">Handles the complex math for quadratic voting scaling and on-chain reputation tier calculations.</p>
+            <div className="bg-zinc-50 p-6 rounded-2xl border border-zinc-200">
+              <Blocks className="text-blue-600 mb-4" size={24} />
+              <h3 className="font-bold text-zinc-900 mb-2 text-lg">VotingManager</h3>
+              <p className="text-sm text-zinc-600">Handles the complex math for quadratic voting scaling and on-chain reputation tier calculations.</p>
             </div>
 
-            <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700/50">
-              <FileDigit className="text-zinc-400 mb-4" size={24} />
-              <h3 className="font-bold text-zinc-100 mb-2 text-lg">ProofOracle</h3>
-              <p className="text-sm text-zinc-400">Verifies off-chain proofs (uploaded securely to Pinata IPFS) to trigger the next on-chain fund release.</p>
+            <div className="bg-zinc-50 p-6 rounded-2xl border border-zinc-200">
+              <FileDigit className="text-blue-600 mb-4" size={24} />
+              <h3 className="font-bold text-zinc-900 mb-2 text-lg">ProofOracle</h3>
+              <p className="text-sm text-zinc-600">Verifies off-chain proofs (uploaded securely to Pinata IPFS) to trigger the next on-chain fund release.</p>
             </div>
           </div>
         </div>
@@ -172,19 +159,19 @@ export default function CharityDaoProject() {
               <div>
                 <div className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Blockchain & Security</div>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">Solidity (v0.8.24)</span>
-                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">OpenZeppelin</span>
-                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">Hardhat & Ethers.js</span>
+                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">Solidity (v0.8.24)</span>
+                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">OpenZeppelin</span>
+                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">Hardhat & Ethers.js</span>
                 </div>
               </div>
               
               <div>
                 <div className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Frontend & Infrastructure</div>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">React & Vite</span>
-                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">TailwindCSS</span>
-                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">IPFS (Pinata)</span>
-                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-sm font-semibold">MetaMask</span>
+                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">React & Vite</span>
+                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">TailwindCSS</span>
+                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">IPFS (Pinata)</span>
+                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">MetaMask</span>
                 </div>
               </div>
             </div>

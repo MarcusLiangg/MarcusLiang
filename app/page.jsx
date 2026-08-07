@@ -1,10 +1,10 @@
 // app/page.jsx
 "use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { TerminalSquare, GraduationCap, FolderGit2, Code2, Mail, FileDown, Briefcase, ArrowUpRight, Target, Trophy } from 'lucide-react';
+import { TerminalSquare, GraduationCap, FolderGit2, Code2, Mail, FileDown, Briefcase, ArrowUpRight, Target, Trophy, Crosshair, Zap, Stethoscope, Scale, HeartHandshake, ShoppingBasket, Landmark, Store, Building2 } from 'lucide-react';
 import Terminal from '../components/Terminal';
 import { PROJECTS_DATA } from '../data/projects';
 import Image from 'next/image';
@@ -12,8 +12,39 @@ import Image from 'next/image';
 // Extract unique categories for the filter buttons
 const ALL_CATEGORIES = ["All", ...new Set(PROJECTS_DATA.flatMap(p => p.categories))];
 
+// Project visuals — a lucide icon is preferred; the emoji is the fallback when no icon fits.
+const PROJECT_ICONS = {
+  "agentic-healthcare": { icon: Stethoscope, emoji: "🩺" },
+  "judicial-analytics-legal-nlp": { icon: Scale, emoji: "⚖️" },
+  "charity-dao": { icon: HeartHandshake, emoji: "🤝" },
+  "fair-tracker": { icon: ShoppingBasket, emoji: "🛒" },
+  "p2p-loan-default": { icon: Landmark, emoji: "💸" },
+  "community-mart": { icon: Store, emoji: "🏪" },
+  "beijing-house-market": { icon: Building2, emoji: "🏙️" },
+};
+
+function ProjectIcon({ projectId, size = 20 }) {
+  const entry = PROJECT_ICONS[projectId];
+  const IconCmp = entry?.icon;
+  if (IconCmp) return <IconCmp size={size} />;
+  return <span style={{ fontSize: size }} className="leading-none">{entry?.emoji || "📁"}</span>;
+}
+
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const { scrollYProgress } = useScroll();
+
+  // Client-side navigation to /#section (e.g. "Back to Portfolio" from a case
+  // study) can land mid-page while the animated layout settles, so re-assert
+  // the hash target once on mount.
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const el = document.querySelector(hash);
+    if (!el) return;
+    const t = setTimeout(() => el.scrollIntoView({ behavior: 'auto', block: 'start' }), 100);
+    return () => clearTimeout(t);
+  }, []);
   
   // NEW: State to track which project is selected in the split-view
   const [selectedProjectId, setSelectedProjectId] = useState(PROJECTS_DATA[0]?.id);
@@ -29,6 +60,12 @@ export default function Portfolio() {
   return (
     <div className="bg-zinc-50 text-zinc-900 min-h-screen font-sans selection:bg-zinc-900 selection:text-white">
       
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 origin-left z-[60]"
+        style={{ scaleX: scrollYProgress }}
+      />
+
       {/* Navigation */}
       <header className="fixed top-0 left-0 right-0 bg-zinc-50/80 backdrop-blur-md z-50 border-b border-zinc-200">
         <nav className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -40,6 +77,15 @@ export default function Portfolio() {
             <li><Link href="#projects" className="hover:text-blue-600 transition-colors">Projects</Link></li>
             <li><Link href="#skills" className="hover:text-blue-600 transition-colors">Skills</Link></li>
             <li><Link href="#contact" className="hover:text-blue-600 transition-colors">Connect</Link></li>
+            {/* 3D PC Setup (static page in public/) */}
+            <li>
+              <a
+                href="/pc-setup.html"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-full transition-all font-semibold"
+              >
+                3D View
+              </a>
+            </li>
             {/* Resume Download Button */}
             <li>
               <a 
@@ -412,21 +458,29 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
             {/* Filter Buttons */}
             <div className="flex flex-wrap gap-3 mb-12">
               {ALL_CATEGORIES.map(category => (
-                <button
+                <motion.button
                   key={category}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     setActiveCategory(category);
                     const newFiltered = PROJECTS_DATA.filter(p => category === "All" || p.categories.includes(category));
                     if (newFiltered.length > 0) setSelectedProjectId(newFiltered[0].id);
                   }}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                  className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
                     activeCategory === category 
-                      ? "bg-blue-600 text-white shadow-md" 
+                      ? "text-white" 
                       : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
                   }`}
                 >
-                  {category}
-                </button>
+                  {activeCategory === category && (
+                    <motion.span
+                      layoutId="activeCategoryPill"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                    />
+                  )}
+                  <span className="relative z-10">{category}</span>
+                </motion.button>
               ))}
             </div>
 
@@ -445,18 +499,31 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, scale: 0.9 }}
+                        whileHover={{ x: 6 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => setSelectedProjectId(project.id)}
-                        className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 group ${
+                        className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 group ${
                           isSelected 
                             ? "bg-blue-50 border-blue-200 shadow-sm" 
                             : "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-sm"
                         }`}
                       >
-                        <h3 className={`text-lg font-bold mb-1 transition-colors ${isSelected ? "text-blue-700" : "text-zinc-900 group-hover:text-blue-600"}`}>
-                          {project.title}
-                        </h3>
-                        <div className={`text-xs font-bold uppercase tracking-wider ${isSelected ? "text-blue-500" : "text-zinc-400"}`}>
-                          {project.date}
+                        <div className="flex items-center gap-4">
+                          <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
+                            isSelected
+                              ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                              : "bg-zinc-100 text-zinc-500 group-hover:bg-blue-50 group-hover:text-blue-600"
+                          }`}>
+                            <ProjectIcon projectId={project.id} size={20} />
+                          </div>
+                          <div className="min-w-0">
+                            <h3 className={`text-base font-bold mb-0.5 transition-colors ${isSelected ? "text-blue-700" : "text-zinc-900 group-hover:text-blue-600"}`}>
+                              {project.title}
+                            </h3>
+                            <div className={`text-xs font-bold uppercase tracking-wider ${isSelected ? "text-blue-500" : "text-zinc-400"}`}>
+                              {project.date}
+                            </div>
+                          </div>
                         </div>
                       </motion.button>
                     )
@@ -480,8 +547,15 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
                       {/* 1. NEW HEADER: Title, Date, Button, and Tech Stack up top! */}
                       <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-6 gap-6 border-b border-zinc-100 pb-6">
                         <div className="flex-grow">
-                          <h2 className="text-3xl font-bold text-zinc-900 tracking-tight mb-2">{activeProject.title}</h2>
-                          <p className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-4">{activeProject.date}</p>
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-blue-600/25 shrink-0">
+                              <ProjectIcon projectId={activeProject.id} size={26} />
+                            </div>
+                            <div>
+                              <h2 className="text-3xl font-bold text-zinc-900 tracking-tight">{activeProject.title}</h2>
+                              <p className="text-sm font-bold text-blue-600 uppercase tracking-widest mt-1">{activeProject.date}</p>
+                            </div>
+                          </div>
                           
                           {/* Tech Stack moved up for immediate visibility */}
                           <div className="flex flex-wrap gap-2">
@@ -501,29 +575,37 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
                         </Link>
                       </div>
 
-                      {/* 2. BANNER IMAGE: Shorter, wider, less intrusive */}
-                      {activeProject.image && (
-                        <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-8 bg-zinc-100 shrink-0 border border-zinc-200/50">
-                          <Image 
-                            src={activeProject.image} 
-                            alt={activeProject.title}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-
-                      {/* 3. CONTENT: Side-by-Side Dashboard layout for STAR */}
+                      {/* CONTENT: 2x2 STAR Dashboard (project icons replaced the old banner) */}
                       <div className="flex-grow">
                         {activeProject.starContent ? (
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Challenge Column */}
+                            {/* Challenge Card */}
                             <div className="bg-zinc-50 p-5 rounded-2xl border border-zinc-200/80 h-full">
                               <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-widest mb-3 flex items-center gap-2">
                                 <Target size={16} className="text-blue-500" /> The Challenge
                               </h4>
                               <p className="text-zinc-600 text-sm leading-relaxed">
                                 {activeProject.starContent.situation}
+                              </p>
+                            </div>
+
+                            {/* Objective Card */}
+                            <div className="bg-zinc-50 p-5 rounded-2xl border border-zinc-200/80 h-full">
+                              <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                <Crosshair size={16} className="text-indigo-500" /> The Objective
+                              </h4>
+                              <p className="text-zinc-600 text-sm leading-relaxed">
+                                {activeProject.starContent.task}
+                              </p>
+                            </div>
+
+                            {/* Execution Card */}
+                            <div className="bg-zinc-50 p-5 rounded-2xl border border-zinc-200/80 h-full">
+                              <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                <Zap size={16} className="text-amber-500" /> What I Built
+                              </h4>
+                              <p className="text-zinc-600 text-sm leading-relaxed">
+                                {activeProject.starContent.action}
                               </p>
                             </div>
                             
