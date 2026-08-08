@@ -190,6 +190,58 @@ export default function Portfolio() {
                           />
                         </div>
                         <div>
+                            <h3 className="text-2xl font-bold text-zinc-900 leading-tight">Business Analyst (Contract)</h3>
+                            <p className="text-lg text-blue-600 font-semibold mt-1">PhillipCapital</p>
+                        </div>
+                    </div>
+
+                    <span className="px-4 py-1.5 bg-white border border-zinc-200 text-zinc-600 rounded-full text-sm font-semibold tracking-wide whitespace-nowrap self-start">
+                      Aug 2026 – Present
+                    </span>
+                 </div>
+
+                 <div className="flex flex-wrap gap-2 mb-6">
+                    <span className="px-2.5 py-1 bg-blue-100/50 text-blue-700 rounded-md text-xs font-semibold">Trading Systems</span>
+                    <span className="px-2.5 py-1 bg-blue-100/50 text-blue-700 rounded-md text-xs font-semibold">RPA Automation</span>
+                    <span className="px-2.5 py-1 bg-white border border-zinc-200 text-zinc-600 rounded-md text-xs font-semibold">Python (Polars)</span>
+                    <span className="px-2.5 py-1 bg-white border border-zinc-200 text-zinc-600 rounded-md text-xs font-semibold">Financial Services</span>
+                 </div>
+
+                 <div className="mb-6">
+                   <h4 className="font-bold text-zinc-900 mb-3 text-sm uppercase tracking-wider">Key Responsibilities</h4>
+                   <ul className="space-y-2 text-zinc-600">
+                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Collaborating on the development and enhancement of an automated trading management system that dynamically adjusts buy/sell trading thresholds based on creditability profile.</li>
+                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Maintaining and optimizing existing RPA workflows, resolving operational bottlenecks to improve automation uptime and process efficiency across business functions.</li>
+                   </ul>
+                 </div>
+
+                 <div className="p-4 bg-white rounded-xl border border-zinc-100 text-sm">
+                   <h4 className="font-bold text-zinc-900 mb-2">Technologies Used</h4>
+                   <p className="text-zinc-600"><strong className="text-zinc-900">Tools:</strong> UiPath, Python (Polars), AI Models, Automation Frameworks</p>
+                 </div>
+              </motion.div>
+
+              {/* Job 2: PhillipCapital — Internship (converted to the contract role above) */}
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                className="relative z-10 bg-zinc-50 p-8 rounded-2xl border border-zinc-200 shadow-sm transition-shadow duration-300 group hover:shadow-md hover:border-zinc-300 hover:bg-white mb-8"
+              >
+                 <div className="flex flex-col md:flex-row md:items-start justify-between mb-6 gap-4">
+                    <div className="flex items-center gap-4 md:gap-5">
+                        <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border border-zinc-200 bg-white shadow-sm shrink-0 p-2">
+                          <Image
+                            src="/experience/phillip-logo.jpg"
+                            alt="PhillipCapital Logo"
+                            fill
+                            className="object-contain p-1"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
+                        <div>
                             <h3 className="text-2xl font-bold text-zinc-900 leading-tight">Business Analyst Intern</h3>
                             <p className="text-lg text-blue-600 font-semibold mt-1">PhillipCapital</p>
                         </div>
@@ -199,7 +251,7 @@ export default function Portfolio() {
                       May 2026 – Jul 2026
                     </span>
                  </div>
-                 
+
                  <div className="flex flex-wrap gap-2 mb-6">
                     <span className="px-2.5 py-1 bg-blue-100/50 text-blue-700 rounded-md text-xs font-semibold">RPA Automation</span>
                     <span className="px-2.5 py-1 bg-blue-100/50 text-blue-700 rounded-md text-xs font-semibold">AI Integration</span>
@@ -210,8 +262,9 @@ export default function Portfolio() {
                  <div className="mb-6">
                    <h4 className="font-bold text-zinc-900 mb-3 text-sm uppercase tracking-wider">Key Responsibilities</h4>
                    <ul className="space-y-2 text-zinc-600">
-                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Developing an AI-integrated RPA framework to not only automate standard reporting but also parse data to extract actionable business insights.</li>
-                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Spearheading integration of mainstream AI tools with UiPath workflows, transforming static reports into dynamic, insight-driven analytics while saving up to 8 man-hours per reporting cycle.</li>
+                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Developed an AI-integrated RPA framework to not only automate standard reporting but also parse data to extract actionable business insights.</li>
+                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Spearheaded integration of mainstream AI tools with UiPath workflows, transforming static reports into dynamic, insight-driven analytics while saving up to 8 man-hours per reporting cycle.</li>
+                     <li className="flex gap-3"><span className="text-blue-500 mt-1">▹</span> Gathered and synthesized feedback from key business stakeholders to iteratively refine prompt engineering and fine-tuning parameters, significantly improving the accuracy and quality of LLM outputs.</li>
                    </ul>
                  </div>
 
@@ -221,7 +274,7 @@ export default function Portfolio() {
                  </div>
               </motion.div>
 
-              {/* Job 2: X-Star Technology */}
+              {/* Job 3: X-Star Technology */}
               {/* Apply Animations Here */}
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
@@ -279,7 +332,7 @@ export default function Portfolio() {
                  </div>
               </motion.div>
 
-              {/* Job 3: Shopee */}
+              {/* Job 4: Shopee */}
               {/* Apply Animations Here */}
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
@@ -677,7 +730,7 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
                 {
                   title: "Generative AI & Deep Learning",
                   emoji: "🧠",
-                  skills: "LangChain, LangGraph, FAISS (Vector Stores), PyTorch, Ollama, OpenAI, Prompt Engineering"
+                  skills: "LangChain, LangGraph, CrewAI, FAISS (Vector Stores), PyTorch, Ollama, OpenAI, NVIDIA NIM, Prompt Engineering"
                 },
                 {
                   title: "Machine Learning",
@@ -702,12 +755,12 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
                 {
                   title: "Data Analytics & BI",
                   emoji: "📊",
-                  skills: "Pandas, NumPy, Power BI (DAX), Tableau, Matplotlib, Vintage Analysis"
+                  skills: "Pandas, NumPy, Polars, Power BI (DAX), Tableau, Matplotlib, Vintage Analysis"
                 },
                 {
                   title: "Automation & Tools",
                   emoji: "⚙️",
-                  skills: "UiPath, Advanced Excel"
+                  skills: "UiPath, Power Automate, Advanced Excel"
                 },
                 {
                   title: "Core Competencies",

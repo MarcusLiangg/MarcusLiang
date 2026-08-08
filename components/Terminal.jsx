@@ -145,8 +145,16 @@ export default function Terminal() {
             }
             
             // Render standard terminal output
+            // User commands get a dashed divider above them; AI/output lines
+            // get a colored left accent bar, so exchanges read as Q&A blocks.
             return (
-              <div key={i} className={`whitespace-pre-wrap ${line.type === 'error' ? 'text-red-400' : ''}`}>
+              <div key={i} className={`whitespace-pre-wrap ${
+                line.type === 'input'
+                  ? 'mt-5 pt-3 border-t border-dashed border-zinc-800 text-zinc-100 font-semibold'
+                  : line.type === 'error'
+                    ? 'my-1 pl-3 border-l-2 border-red-500/50 text-red-400'
+                    : 'my-1 pl-3 border-l-2 border-blue-500/40 text-zinc-400'
+              }`}>
                 {line.text}
               </div>
             );

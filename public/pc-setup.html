@@ -87,8 +87,14 @@
   .banner .cmd { color: #f4f4f5; font-weight: 600; }
   .banner .ai-hint { color: #71717a; font-size: 12px; font-style: italic; margin-top: 10px; }
 
-  .line { white-space: pre-wrap; margin: 4px 0; }
-  .line.error { color: #f87171; }
+  .line { white-space: pre-wrap; margin: 6px 0; }
+  .line.input {
+    margin-top: 16px; padding-top: 12px;
+    border-top: 1px dashed #27272a;
+    color: #f4f4f5; font-weight: 600;
+  }
+  .line.output { color: #a1a1aa; padding-left: 12px; border-left: 2px solid rgba(59,130,246,.4); }
+  .line.error { color: #f87171; padding-left: 12px; border-left: 2px solid rgba(248,113,113,.5); }
   .prompt-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
   .prompt-row .ps1 { color: #4ade80; white-space: nowrap; }
   #ide-input {
@@ -645,9 +651,18 @@ const bizCardTex = makeCanvasTexture(1024, 585, (g, w, h) => {
   g.fillText('Business Analytics · Data Science', 70, 210);
   g.strokeStyle = '#d4d4d8'; g.lineWidth = 3;
   g.beginPath(); g.moveTo(70, 260); g.lineTo(w - 70, 260); g.stroke();
-  g.font = '34px Georgia, serif'; g.fillStyle = '#374151';
-  g.fillText('✉  marcusliang@u.nus.edu', 70, 370);
-  g.fillText('in  linkedin.com/in/liangmarcus', 70, 450);
+  // Contact rows: icons share a 44px column (centered at x=92), text starts at x=132
+  g.font = '30px Arial, sans-serif'; g.fillStyle = '#374151'; g.textAlign = 'center';
+  g.fillText('✉', 92, 367);
+  g.textAlign = 'left'; g.font = '34px Georgia, serif';
+  g.fillText('marcusliang@u.nus.edu', 132, 370);
+  // LinkedIn badge: blue rounded square with a white "in" glyph
+  g.fillStyle = '#0a66c2';
+  g.beginPath(); g.roundRect(70, 412, 44, 44, 8); g.fill();
+  g.fillStyle = '#ffffff'; g.font = 'bold 30px Arial, sans-serif'; g.textAlign = 'center';
+  g.fillText('in', 92, 446);
+  g.textAlign = 'left'; g.font = '34px Georgia, serif'; g.fillStyle = '#374151';
+  g.fillText('linkedin.com/in/liangmarcus', 132, 450);
   g.font = 'italic 26px Georgia, serif'; g.fillStyle = '#9ca3af';
   g.fillText('National University of Singapore', 70, 530);
 });
@@ -978,7 +993,7 @@ const BANNER_HTML = `
   </div>
 </div>`;
 
-function addLine(text, cls = '') {
+function addLine(text, cls = 'output') {
   const div = document.createElement('div');
   div.className = 'line ' + cls;
   div.textContent = text;
@@ -1019,7 +1034,7 @@ inputEl.addEventListener('keydown', async (e) => {
     return;
   }
 
-  addLine(`visitor@portfolio:~$ ${cmd}`);
+  addLine(`visitor@portfolio:~$ ${cmd}`, 'input');
   inputEl.value = '';
 
   if (cmd.toLowerCase() === 'resume') {

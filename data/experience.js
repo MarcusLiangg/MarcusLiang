@@ -1,11 +1,21 @@
 export const EXPERIENCE_DATA = [
   {
     company: "PhillipCapital",
+    role: "Business Analyst (Contract)",
+    date: "Aug 2026 – Present",
+    responsibilities: [
+      "Collaborating on the development and enhancement of an automated trading management system that dynamically adjusts buy/sell trading thresholds based on creditability profile.",
+      "Maintaining and optimizing existing RPA workflows, resolving operational bottlenecks to improve automation uptime and process efficiency across business functions."
+    ]
+  },
+  {
+    company: "PhillipCapital",
     role: "Business Analyst Intern",
     date: "May 2026 – Jul 2026",
     responsibilities: [
-      "Developing an AI-integrated RPA framework to not only automate standard reporting but also parse data to extract actionable business insights.",
-      "Spearheading integration of mainstream AI tools with UiPath workflows, transforming static reports into dynamic, insight-driven analytics while saving up to 8 man-hours per reporting cycle."
+      "Developed an AI-integrated RPA framework to not only automate standard reporting but also parse data to extract actionable business insights.",
+      "Spearheaded integration of mainstream AI tools with UiPath workflows, transforming static reports into dynamic, insight-driven analytics while saving up to 8 man-hours per reporting cycle.",
+      "Gathered and synthesized feedback from key business stakeholders to iteratively refine prompt engineering and fine-tuning parameters, significantly improving the accuracy and quality of LLM outputs."
     ]
   },
   {
