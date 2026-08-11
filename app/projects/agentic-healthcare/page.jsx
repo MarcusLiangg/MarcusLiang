@@ -203,6 +203,7 @@ export default function AgenticHealthcareProject() {
                   <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">ClinicalBERT</span>
                   <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">FAISS</span>
                   <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">Large Language Models (LLMs)</span>
+                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-sm font-semibold border border-zinc-200/50">Ollama</span>
                 </div>
               </div>
               

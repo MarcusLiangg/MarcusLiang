@@ -4,17 +4,18 @@ export const PROJECTS_DATA = [
     title: "Agentic Healthcare Analytics",
     date: "Jan 2026 - Apr 2026",
     categories: ["AI & Machine Learning", "Data Analytics"],
-    shortDesc: "A multi-agent workflow that translates natural-language healthcare questions into auditable structured-data analysis using LangGraph and DuckDB.",
+    shortDesc: "A multi-agent workflow built with the National Cancer Centre Singapore (NCCS) that translates natural-language healthcare questions into auditable structured-data analysis using LangGraph and DuckDB.",
     
     starContent: {
-      situation: "Clinical experts often face significant delays when trying to validate medical hypotheses because they rely heavily on specialized data engineers to query and extract information from complex, highly-regulated healthcare databases.",
+      situation: "At the National Cancer Centre Singapore (NCCS), clinical experts often face significant delays when trying to validate medical hypotheses because they rely heavily on specialized data engineers to query and extract information from complex, highly-regulated healthcare databases.",
       task: "The objective was to bridge the gap between clinical expertise and data science by building an intelligent copilot that allows medical professionals to query complex datasets directly using natural language, without waiting for human intermediaries.",
       action: "Engineered a multi-agent AI workflow using LangGraph and DuckDB. The system uses ClinicalBERT and FAISS to ground medical terminology to actual database schemas, dynamically generating accurate SQL queries while enforcing strict Human-In-The-Loop (HITL) checkpoints.",
       result: "Created an auditable, transparent analytics assistant that empowers clinicians to rapidly explore health data. This drastically reduces the turnaround time for hypothesis testing while preserving data security and exposing the analytical path for clinical review."
     },
 
-    image: "/projects/healthcare-agentic-cover.png", 
-    technologies: ["LangGraph", "DuckDB", "ClinicalBERT", "SQL", "LLM Orchestration", "FAISS"]
+    image: "/projects/nccs-logo.jpg",
+    logo: "/projects/nccs-logo.jpg", 
+    technologies: ["LangGraph", "DuckDB", "ClinicalBERT", "SQL", "LLM Orchestration", "FAISS", "Ollama"]
   },
   {
     id: "judicial-analytics-legal-nlp",

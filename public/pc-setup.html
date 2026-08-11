@@ -110,6 +110,15 @@
   }
   #hud b { color: #a1a1aa; }
 
+  #exit-btn {
+    position: fixed; top: 16px; right: 16px; z-index: 30;
+    padding: 10px 18px; border-radius: 999px; text-decoration: none;
+    background: rgba(9,9,11,.6); color: #a1a1aa; border: 1px solid #27272a;
+    font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    transition: background .15s ease, color .15s ease;
+  }
+  #exit-btn:hover { background: #27272a; color: #f4f4f5; }
+
   #put-down-btn {
     position: fixed; bottom: 28px; left: 50%;
     transform: translateX(-50%) translateY(16px);
@@ -163,6 +172,8 @@
 <body>
 
 <div id="scene-container"></div>
+
+<a id="exit-btn" href="/" title="Back to portfolio">&#8592;&nbsp; Exit 3D View</a>
 
 <!-- The IDE DOM lives here; CSS3DRenderer moves #ide-root into its layer. -->
 <div id="ide-root">
@@ -528,7 +539,7 @@ mug.add(coaster);
    ============================================================ */
 const PROJECTS = [
   { id: 'agentic-healthcare', title: 'Agentic Healthcare Analytics', date: 'Jan 2026 - Apr 2026',
-    shortDesc: 'A multi-agent workflow that translates natural-language healthcare questions into auditable structured-data analysis using LangGraph and DuckDB.' },
+    shortDesc: 'A multi-agent workflow built with the National Cancer Centre Singapore (NCCS) that translates natural-language healthcare questions into auditable structured-data analysis using LangGraph and DuckDB.' },
   { id: 'judicial-analytics-legal-nlp', title: 'Judicial Analytics & Legal NLP', date: 'Jan 2026 - Apr 2026',
     shortDesc: 'A comprehensive NLP pipeline designed to extract, process, and analyze complex legal documents while strictly controlling for data leakage.' },
   { id: 'charity-dao', title: 'Charity DAO: Decentralized Giving', date: 'Aug 2025 - Dec 2025',

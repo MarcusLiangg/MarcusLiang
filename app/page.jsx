@@ -562,6 +562,11 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
                         }`}
                       >
                         <div className="flex items-center gap-4">
+                          {project.logo ? (
+                            <div className="w-11 h-11 rounded-xl bg-white border border-zinc-200 shadow-sm shrink-0 flex items-center justify-center overflow-hidden p-1">
+                              <Image src={project.logo} alt={`${project.title} logo`} width={40} height={40} className="object-contain" />
+                            </div>
+                          ) : (
                           <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
                             isSelected
                               ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
@@ -569,6 +574,7 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
                           }`}>
                             <ProjectIcon projectId={project.id} size={20} />
                           </div>
+                          )}
                           <div className="min-w-0">
                             <h3 className={`text-base font-bold mb-0.5 transition-colors ${isSelected ? "text-blue-700" : "text-zinc-900 group-hover:text-blue-600"}`}>
                               {project.title}
@@ -601,9 +607,15 @@ Analytics, BT3017 Feature Engineering for Machine Learning, CS2040 Data Structur
                       <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-6 gap-6 border-b border-zinc-100 pb-6">
                         <div className="flex-grow">
                           <div className="flex items-center gap-4 mb-4">
+                            {activeProject.logo ? (
+                              <div className="w-14 h-14 rounded-2xl bg-white border border-zinc-200 shadow-sm shrink-0 flex items-center justify-center overflow-hidden p-1.5">
+                                <Image src={activeProject.logo} alt={`${activeProject.title} logo`} width={52} height={52} className="object-contain" />
+                              </div>
+                            ) : (
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-blue-600/25 shrink-0">
                               <ProjectIcon projectId={activeProject.id} size={26} />
                             </div>
+                            )}
                             <div>
                               <h2 className="text-3xl font-bold text-zinc-900 tracking-tight">{activeProject.title}</h2>
                               <p className="text-sm font-bold text-blue-600 uppercase tracking-widest mt-1">{activeProject.date}</p>
